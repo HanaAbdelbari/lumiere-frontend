@@ -4,6 +4,8 @@ import Hero from "./components/Hero";
 import TrustBar from "./components/TrustBar";
 import Link from "next/link";
 import Image from "next/image";
+import InstagramIcon from "./components/InstagramIcon";
+import { Music2 } from "lucide-react";
 
 type ProductSummary = {
   id: number;
@@ -88,17 +90,15 @@ export default async function HomePage() {
 
       {/* Current Offers — only shows if there are any offers */}
       {offers.length > 0 && (
-        <section className="bg-[#F8F2EC] py-20">
+        <section className="bg-[#F8F2EC] py-14">
           <div className="mx-auto max-w-5xl px-4">
             <div className="mb-8 text-center">
               <h2 className="font-serif text-4xl text-brown">Current Offers</h2>
               <div className="mx-auto mt-2 h-px w-16 bg-gold" />
             </div>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {offers.map((product) => (
-                <div key={product.id} className="w-[calc(50%-0.5rem)] md:w-[calc(25%-0.75rem)]">
-                  <ProductCard product={product} />
-                </div>
+                <ProductCard key={product.id} product={product} />
               ))}
             </div>
             <div className="mt-8 text-center">
@@ -132,24 +132,31 @@ export default async function HomePage() {
               Timeless stainless steel accessories designed to elevate your
               everyday style. Each piece is made to shine with you, every moment.
             </p>
-            <Link href="/about" className="mt-5 inline-block text-sm text-brown transition-colors hover:text-gold">
-              Learn More →
-            </Link>
+            <div className="mt-5 flex items-center gap-3">
+              <Link href="/shop" className="rounded-md bg-brown px-6 py-2.5 text-sm text-white transition-colors hover:bg-[#4E342E]">
+                Explore Collection
+              </Link>
+              <Link href="/about" className="rounded-md border border-brown px-6 py-2.5 text-sm text-brown transition-colors hover:bg-brown hover:text-white">
+                Our Story
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Follow Us */}
-      <section className="bg-[#F8F2EC] py-16">
-        <div className="mx-auto max-w-md px-4 text-center">
+      {/* Follow Us — three icon cards */}
+      <section className="bg-[#F8F2EC] py-14">
+        <div className="mx-auto max-w-2xl px-4 text-center">
           <h2 className="font-serif text-3xl text-brown">Follow Lumière</h2>
           <p className="mt-2 text-sm text-brown-soft">Stay inspired with our latest collections.</p>
-          <div className="mt-6 flex flex-col gap-3">
-            <a href="https://instagram.com/lumiereaccessories.lu" target="_blank" rel="noopener noreferrer" className="rounded-md border border-brown py-3 text-sm text-brown transition-colors hover:bg-brown hover:text-white">
-              Follow us on Instagram
+          <div className="mt-6 grid grid-cols-2 gap-3">
+            <a href="https://instagram.com/lumiereaccessories.lu" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 rounded-lg border border-hairline bg-white py-5 text-brown transition-all hover:-translate-y-0.5 hover:shadow-md">
+              <InstagramIcon size={24} />
+              <span className="text-xs">Instagram</span>
             </a>
-            <a href="https://tiktok.com/@lumiere_2222" target="_blank" rel="noopener noreferrer" className="rounded-md border border-brown py-3 text-sm text-brown transition-colors hover:bg-brown hover:text-white">
-              Follow us on TikTok
+            <a href="https://tiktok.com/@lumiere_2222" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 rounded-lg border border-hairline bg-white py-5 text-brown transition-all hover:-translate-y-0.5 hover:shadow-md">
+              <Music2 size={24} />
+              <span className="text-xs">TikTok</span>
             </a>
           </div>
         </div>
@@ -157,9 +164,9 @@ export default async function HomePage() {
 
       {/* Final CTA */}
       <section className="mx-auto max-w-3xl px-4 py-20 text-center">
-        <h2 className="font-serif text-4xl text-brown">Ready to shine? ✨</h2>
+        <h2 className="font-serif text-4xl text-brown">Ready to Elevate Your Style?</h2>
         <p className="mt-3 text-sm text-brown-soft">
-          Discover timeless accessories designed for every moment.
+          Explore our timeless stainless steel collection.
         </p>
         <Link href="/shop" className="mt-6 inline-block rounded-xl bg-brown px-10 py-3.5 text-base tracking-wide text-white transition-colors hover:bg-[#4E342E]">
           Shop Now

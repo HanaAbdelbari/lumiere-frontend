@@ -27,7 +27,6 @@ export default function ProductCard({ product }: { product: Product }) {
           />
         )}
 
-        {/* Sale badge — softer brownish red that fits the theme */}
         {product.onSale && (
           <span className="absolute right-2 top-2 rounded-full bg-[#A55B4B] px-2 py-1 text-xs text-white">
             -{product.discountPercent}%
@@ -39,14 +38,19 @@ export default function ProductCard({ product }: { product: Product }) {
             Out of stock
           </span>
         )}
+
+        {/* Quick "View" button that slides up on hover (in stock only) */}
+        {product.inStock && (
+          <div className="absolute inset-x-0 bottom-0 translate-y-full bg-brown/90 py-2 text-center text-xs text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+            View Product
+          </div>
+        )}
       </div>
 
-      {/* Name — semibold, with a little breathing room above the price */}
       <h3 className="mt-3 font-serif text-lg font-semibold text-brown">
         {product.name}
       </h3>
 
-      {/* Price — old price a touch darker for readability */}
       <div className="mt-2 flex items-center gap-2">
         {product.onSale ? (
           <>
