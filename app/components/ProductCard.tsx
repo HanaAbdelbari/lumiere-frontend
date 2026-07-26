@@ -1,10 +1,8 @@
 // A reusable card for one product. Used in shop, new arrivals, offers, related.
-// It receives one "product" and returns how that card looks.
 
 import Image from "next/image";
 import Link from "next/link";
 
-// The shape of the product this card expects (matches the API).
 type Product = {
   id: number;
   name: string;
@@ -17,31 +15,29 @@ type Product = {
   mainImageUrl: string | null;
 };
 
-// "{ product }" means this component receives a product to display.
 export default function ProductCard({ product }: { product: Product }) {
   return (
-    // Link makes the whole card clickable, going to the product page.
     <Link href={`/shop/${product.slug}`} className="group block">
-      {/* Image area */}
-      <div className="relative aspect-square overflow-hidden rounded-lg border border-hairline bg-white">
+      {/* Image area — hover gently zooms the image for a premium feel */}
+      <div className="relative aspect-square overflow-hidden rounded-lg border border-hairline bg-white transition-shadow duration-300 group-hover:shadow-md">
         {product.mainImageUrl && (
           <Image
             src={product.mainImageUrl}
             alt={product.name}
             fill
-            className="object-cover transition duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
             sizes="(max-width: 768px) 50vw, 25vw"
           />
         )}
 
-        {/* Sale badge — only shows when on sale */}
+        {/* Sale badge — red to grab attention */}
         {product.onSale && (
-          <span className="absolute right-2 top-2 rounded-full bg-rose px-2 py-1 text-xs text-rose-text">
+          <span className="absolute right-2 top-2 rounded-full bg-[#B23A3A] px-2 py-1 text-xs text-white">
             -{product.discountPercent}%
           </span>
         )}
 
-        {/* Out of stock overlay — only when not in stock */}
+        {/* Out of stock */}
         {!product.inStock && (
           <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-1 text-xs text-muted">
             Out of stock
@@ -49,18 +45,22 @@ export default function ProductCard({ product }: { product: Product }) {
         )}
       </div>
 
-      {/* Name */}
-      <h3 className="mt-3 font-serif text-lg text-brown">{product.name}</h3>
+      {/* Name — weight 500 for clarity */}
+      <h3 className="mt-3 font-serif text-lg font-medium text-brown">
+        {product.name}
+      </h3>
 
-      {/* Price — if on sale, show sale price + struck-through old price */}
+      {/* Price — current price bold, old price lighter */}
       <div className="mt-1 flex items-center gap-2">
         {product.onSale ? (
           <>
-            <span className="text-brown">EGP {product.salePrice}</span>
-            <span className="text-sm text-muted line-through">EGP {product.price}</span>
+            <span className="font-medium text-brown">EGP {product.salePrice}</span>
+            <span className="text-sm text-muted/70 line-through">
+              EGP {product.price}
+            </span>
           </>
         ) : (
-          <span className="text-brown">EGP {product.price}</span>
+          <span className="font-medium text-brown">EGP {product.price}</span>
         )}
       </div>
     </Link>

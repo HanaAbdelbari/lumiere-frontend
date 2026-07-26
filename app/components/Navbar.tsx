@@ -1,4 +1,4 @@
-"use client"; // has interaction (opening/closing the menu), so it runs in the browser
+"use client";
 
 import Link from "next/link";
 import { useState } from "react";
@@ -19,37 +19,43 @@ export default function Navbar() {
   return (
     <header className="border-b border-hairline bg-white">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-        {/* Left: hamburger button */}
         <button
           onClick={() => setIsOpen(true)}
           aria-label="Open menu"
-          className="text-brown"
+          className="text-brown transition-colors hover:text-brown-soft"
         >
           <Menu size={22} />
         </button>
 
-        {/* Center: logo */}
-        <Link href="/" className="font-serif text-xl tracking-[0.2em] text-brown">
+        {/* Logo — larger for a stronger brand presence */}
+        <Link
+          href="/"
+          className="font-serif text-2xl tracking-[0.2em] text-brown"
+        >
           LUMIÈRE
         </Link>
 
-        {/* Right: instagram + cart */}
+        {/* Icons — hover turns brown-soft to keep the identity consistent */}
         <div className="flex items-center gap-4 text-brown">
           <a
             href="https://instagram.com/lumiereaccessories.lu"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
+            className="transition-colors hover:text-brown-soft"
           >
             <InstagramIcon size={19} />
           </a>
-          <Link href="/cart" aria-label="Cart">
+          <Link
+            href="/cart"
+            aria-label="Cart"
+            className="transition-colors hover:text-brown-soft"
+          >
             <ShoppingBag size={19} />
           </Link>
         </div>
       </div>
 
-      {/* Dark overlay behind the drawer — clicking it closes the menu. */}
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}
@@ -58,7 +64,6 @@ export default function Navbar() {
         />
       )}
 
-      {/* Side drawer that slides in from the LEFT. */}
       <nav
         className={`fixed left-0 top-0 z-50 h-full w-64 bg-white shadow-lg transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
@@ -71,7 +76,7 @@ export default function Navbar() {
           <button
             onClick={() => setIsOpen(false)}
             aria-label="Close menu"
-            className="text-brown"
+            className="text-brown transition-colors hover:text-brown-soft"
           >
             <X size={20} />
           </button>
@@ -83,7 +88,7 @@ export default function Navbar() {
               <Link
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="block py-3 text-sm text-brown"
+                className="block py-3 text-sm text-brown transition-colors hover:text-brown-soft"
               >
                 {link.label}
               </Link>

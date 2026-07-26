@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-/* Lumière design tokens — from design-system.md.
-   Tailwind v4 defines custom colors and fonts here with @theme. */
 @theme {
   --color-brown: #4E342E;
   --color-brown-soft: #8A6D52;
@@ -21,20 +19,31 @@ body {
   color: #4E342E;
 }
 
-/* Marquee: the track has two identical halves. Moving it left by exactly
-   half its width (-50%) and looping means the second half lands exactly
-   where the first was — a seamless circular scroll. */
+/* Marquee — slower now (60s) for a calmer scroll */
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-
 .animate-marquee {
-  animation: marquee 25s linear infinite;
+  animation: marquee 60s linear infinite;
+}
+
+/* Hero fade-up: content gently rises and fades in on page load */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-fade {
+  animation: fadeUp 0.7s ease-out both;
+}
+.hero-fade-delayed {
+  animation: fadeUp 0.7s ease-out 0.15s both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee {
+  .animate-marquee,
+  .hero-fade,
+  .hero-fade-delayed {
     animation: none;
   }
 }
