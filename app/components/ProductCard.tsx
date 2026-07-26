@@ -1,5 +1,3 @@
-// A reusable card for one product. Used in shop, new arrivals, offers, related.
-
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,7 +16,6 @@ type Product = {
 export default function ProductCard({ product }: { product: Product }) {
   return (
     <Link href={`/shop/${product.slug}`} className="group block">
-      {/* Image area — hover gently zooms the image for a premium feel */}
       <div className="relative aspect-square overflow-hidden rounded-lg border border-hairline bg-white transition-shadow duration-300 group-hover:shadow-md">
         {product.mainImageUrl && (
           <Image
@@ -30,14 +27,13 @@ export default function ProductCard({ product }: { product: Product }) {
           />
         )}
 
-        {/* Sale badge — red to grab attention */}
+        {/* Sale badge — softer brownish red that fits the theme */}
         {product.onSale && (
-          <span className="absolute right-2 top-2 rounded-full bg-[#B23A3A] px-2 py-1 text-xs text-white">
+          <span className="absolute right-2 top-2 rounded-full bg-[#A55B4B] px-2 py-1 text-xs text-white">
             -{product.discountPercent}%
           </span>
         )}
 
-        {/* Out of stock */}
         {!product.inStock && (
           <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-1 text-xs text-muted">
             Out of stock
@@ -45,17 +41,17 @@ export default function ProductCard({ product }: { product: Product }) {
         )}
       </div>
 
-      {/* Name — weight 500 for clarity */}
-      <h3 className="mt-3 font-serif text-lg font-medium text-brown">
+      {/* Name — semibold, with a little breathing room above the price */}
+      <h3 className="mt-3 font-serif text-lg font-semibold text-brown">
         {product.name}
       </h3>
 
-      {/* Price — current price bold, old price lighter */}
-      <div className="mt-1 flex items-center gap-2">
+      {/* Price — old price a touch darker for readability */}
+      <div className="mt-2 flex items-center gap-2">
         {product.onSale ? (
           <>
             <span className="font-medium text-brown">EGP {product.salePrice}</span>
-            <span className="text-sm text-muted/70 line-through">
+            <span className="text-sm text-brown-soft line-through">
               EGP {product.price}
             </span>
           </>

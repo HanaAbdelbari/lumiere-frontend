@@ -50,7 +50,7 @@ export default function AddToCartSection({
       </div>
 
       {/* Add to cart — darker brown with a hover shade and smooth transition */}
-      <button className="flex-1 rounded-md bg-[#5A3B30] py-3 text-white transition-colors duration-200 hover:bg-[#6D4638]">
+      <button className="flex-1 rounded-md bg-[#5A3B30] py-3 text-white transition-colors duration-200 hover:bg-[#4E342E]">
         Add to Cart
       </button>
     </div>

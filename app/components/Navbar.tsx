@@ -18,38 +18,37 @@ export default function Navbar() {
 
   return (
     <header className="border-b border-hairline bg-white">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
         <button
           onClick={() => setIsOpen(true)}
           aria-label="Open menu"
-          className="text-brown transition-colors hover:text-brown-soft"
+          className="text-brown transition-colors hover:text-gold"
         >
           <Menu size={22} />
         </button>
 
-        {/* Logo — larger for a stronger brand presence */}
+        {/* Logo — wider letter spacing, medium weight for a refined look */}
         <Link
           href="/"
-          className="font-serif text-2xl tracking-[0.2em] text-brown"
+          className="font-serif text-2xl font-medium tracking-[0.35em] text-brown"
         >
           LUMIÈRE
         </Link>
 
-        {/* Icons — hover turns brown-soft to keep the identity consistent */}
         <div className="flex items-center gap-4 text-brown">
           <a
             href="https://instagram.com/lumiereaccessories.lu"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
-            className="transition-colors hover:text-brown-soft"
+            className="transition-colors hover:text-gold"
           >
             <InstagramIcon size={19} />
           </a>
           <Link
             href="/cart"
             aria-label="Cart"
-            className="transition-colors hover:text-brown-soft"
+            className="transition-colors hover:text-gold"
           >
             <ShoppingBag size={19} />
           </Link>
@@ -70,13 +69,13 @@ export default function Navbar() {
         }`}
       >
         <div className="flex items-center justify-between border-b border-hairline px-5 py-4">
-          <span className="font-serif text-lg tracking-[0.2em] text-brown">
+          <span className="font-serif text-lg font-medium tracking-[0.3em] text-brown">
             LUMIÈRE
           </span>
           <button
             onClick={() => setIsOpen(false)}
             aria-label="Close menu"
-            className="text-brown transition-colors hover:text-brown-soft"
+            className="text-brown transition-colors hover:text-gold"
           >
             <X size={20} />
           </button>
@@ -88,7 +87,7 @@ export default function Navbar() {
               <Link
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="block py-3 text-sm text-brown transition-colors hover:text-brown-soft"
+                className="block py-3 text-sm text-brown transition-colors hover:text-gold"
               >
                 {link.label}
               </Link>

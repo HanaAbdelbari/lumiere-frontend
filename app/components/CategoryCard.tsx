@@ -25,7 +25,7 @@ export default function CategoryCard({ category }: { category: Category }) {
       )}
 
       {/* Gradient from the bottom — keeps the name readable on any image */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent transition-opacity duration-300 group-hover:opacity-70" />
 
       {/* Name — rises slightly on hover */}
       <div className="absolute inset-x-0 bottom-0 flex justify-center pb-3">
