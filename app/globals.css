@@ -1,9 +1,7 @@
 @import "tailwindcss";
 
 /* Lumière design tokens — from design-system.md.
-   In Tailwind v4, custom colors and fonts are defined here with @theme.
-   NOTE: Tailwind v4 puts these in CSS (not tailwind.config.js like older docs).
-   After this, we can use classes like bg-brown, text-rose, font-serif. */
+   Tailwind v4 defines custom colors and fonts here with @theme. */
 @theme {
   --color-brown: #4E342E;
   --color-brown-soft: #8A6D52;
@@ -14,14 +12,29 @@
   --color-sand: #EADBC8;
   --color-hairline: #EFE8DF;
 
-  /* These point to the fonts loaded in layout.tsx.
-     font-serif -> Cormorant (headings), font-sans -> Inter (body). */
   --font-serif: var(--font-cormorant), serif;
   --font-sans: var(--font-inter), sans-serif;
 }
 
-/* A clean white background for the whole site. */
 body {
   background-color: #FFFFFF;
   color: #4E342E;
+}
+
+/* Marquee: the track has two identical halves. Moving it left by exactly
+   half its width (-50%) and looping means the second half lands exactly
+   where the first was — a seamless circular scroll. */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
 }

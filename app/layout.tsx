@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-// Next.js can load Google Fonts in an optimized way, right here.
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
+import AnnouncementBar from "./components/AnnouncementBar";
+import Navbar from "./components/Navbar";
 
-// Load Cormorant Garamond (our heading font) and expose it as a CSS variable.
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-cormorant",
 });
 
-// Load Inter (our body font).
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -28,9 +27,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* Attach both font variables so they're available site-wide,
-          and default the body text to Inter. */}
       <body className={`${cormorant.variable} ${inter.variable} font-sans`}>
+        {/* These appear on every page, above the page content. */}
+        <AnnouncementBar />
+        <Navbar />
         {children}
       </body>
     </html>
