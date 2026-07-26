@@ -88,12 +88,12 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Current Offers — only shows if there are any offers */}
+      {/* Sale — only shows if there are any offers */}
       {offers.length > 0 && (
         <section className="bg-[#F8F2EC] py-14">
           <div className="mx-auto max-w-5xl px-4">
             <div className="mb-8 text-center">
-              <h2 className="font-serif text-4xl text-brown">Current Offers</h2>
+              <h2 className="font-serif text-4xl text-brown">Sale</h2>
               <div className="mx-auto mt-2 h-px w-16 bg-gold" />
             </div>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -106,7 +106,7 @@ export default async function HomePage() {
                 href="/shop/sale"
                 className="text-sm text-rose underline underline-offset-4"
               >
-                View All Offers
+                View All
               </Link>
             </div>
           </div>

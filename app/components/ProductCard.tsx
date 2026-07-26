@@ -22,24 +22,26 @@ export default function ProductCard({ product }: { product: Product }) {
             src={product.mainImageUrl}
             alt={product.name}
             fill
-            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+            // Out-of-stock products look muted (grayscale + dimmed)
+            className={`object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] ${
+              !product.inStock ? "grayscale opacity-70" : ""
+            }`}
             sizes="(max-width: 768px) 50vw, 25vw"
           />
         )}
 
         {product.onSale && (
-          <span className="absolute right-2 top-2 rounded-full bg-[#A55B4B] px-2 py-1 text-xs text-white">
+          <span className="absolute right-2 top-2 rounded-full bg-[#A55B4B] px-2.5 py-1 text-xs text-white">
             -{product.discountPercent}%
           </span>
         )}
 
         {!product.inStock && (
-          <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-1 text-xs text-muted">
+          <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2.5 py-1 text-xs text-muted">
             Out of stock
           </span>
         )}
 
-        {/* Quick "View" button that slides up on hover (in stock only) */}
         {product.inStock && (
           <div className="absolute inset-x-0 bottom-0 translate-y-full bg-brown/90 py-2 text-center text-xs text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
             View Product
@@ -47,20 +49,22 @@ export default function ProductCard({ product }: { product: Product }) {
         )}
       </div>
 
-      <h3 className="mt-3 font-serif text-lg font-semibold text-brown">
+      {/* More breathing room above the name */}
+      <h3 className="mt-4 font-serif text-lg font-semibold text-brown">
         {product.name}
       </h3>
 
+      {/* Current price bolder; old price dimmed */}
       <div className="mt-2 flex items-center gap-2">
         {product.onSale ? (
           <>
-            <span className="font-medium text-brown">EGP {product.salePrice}</span>
-            <span className="text-sm text-brown-soft line-through">
+            <span className="font-bold text-brown">EGP {product.salePrice}</span>
+            <span className="text-sm text-brown-soft opacity-60 line-through">
               EGP {product.price}
             </span>
           </>
         ) : (
-          <span className="font-medium text-brown">EGP {product.price}</span>
+          <span className="font-bold text-brown">EGP {product.price}</span>
         )}
       </div>
     </Link>
