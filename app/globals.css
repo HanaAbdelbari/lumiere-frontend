@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
-/* Lumière design tokens — from our design-system.md.
+/* Lumière design tokens — from design-system.md.
    In Tailwind v4, custom colors and fonts are defined here with @theme.
+   NOTE: Tailwind v4 puts these in CSS (not tailwind.config.js like older docs).
    After this, we can use classes like bg-brown, text-rose, font-serif. */
 @theme {
   --color-brown: #4E342E;
@@ -13,8 +14,10 @@
   --color-sand: #EADBC8;
   --color-hairline: #EFE8DF;
 
-  --font-serif: "Cormorant Garamond", serif;
-  --font-sans: "Inter", sans-serif;
+  /* These point to the fonts loaded in layout.tsx.
+     font-serif -> Cormorant (headings), font-sans -> Inter (body). */
+  --font-serif: var(--font-cormorant), serif;
+  --font-sans: var(--font-inter), sans-serif;
 }
 
 /* A clean white background for the whole site. */
