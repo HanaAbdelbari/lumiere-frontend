@@ -1,18 +1,33 @@
-"use client"; // interactive: the quantity stepper changes a number
+"use client";
 
 import { useState } from "react";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, CheckCircle } from "lucide-react";
+import Link from "next/link";
+import { useCart } from "../context/CartContext";
 
-// Receives whether the product is in stock and how many are available.
+// Receives everything needed to add this product to the cart.
 export default function AddToCartSection({
+  id,
+  slug,
+  name,
+  price,
+  imageUrl,
+  attributes,
   inStock,
   stockQuantity,
 }: {
+  id: number;
+  slug: string;
+  name: string;
+  price: number;
+  imageUrl: string | null;
+  attributes: string;
   inStock: boolean;
   stockQuantity: number;
 }) {
-  // "quantity" remembers how many the customer wants. Starts at 1.
+  const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const [showToast, setShowToast] = useState(false);
 
   if (!inStock) {
     return (
@@ -25,34 +40,66 @@ export default function AddToCartSection({
     );
   }
 
+  function handleAdd() {
+    addItem({ id, slug, name, price, imageUrl, attributes }, quantity);
+    setShowToast(true); // show the confirmation
+  }
+
   return (
-    <div className="flex items-center gap-4">
-      {/* Quantity stepper */}
-      <div className="flex items-center rounded-md border border-hairline">
+    <div>
+      <div className="flex items-center gap-4">
+        {/* Quantity stepper */}
+        <div className="flex items-center rounded-md border border-hairline">
+          <button
+            onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+            aria-label="Decrease quantity"
+            className="px-3 py-3 text-brown-soft transition-colors hover:text-brown"
+          >
+            <Minus size={16} />
+          </button>
+          <span className="border-x border-hairline px-4 py-3 text-sm text-brown">
+            {quantity}
+          </span>
+          <button
+            onClick={() => setQuantity((q) => Math.min(stockQuantity, q + 1))}
+            aria-label="Increase quantity"
+            className="px-3 py-3 text-brown-soft transition-colors hover:text-brown"
+          >
+            <Plus size={16} />
+          </button>
+        </div>
+
         <button
-          onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-          aria-label="Decrease quantity"
-          className="px-3 py-3 text-brown-soft transition-colors hover:text-brown"
+          onClick={handleAdd}
+          className="flex-1 rounded-md bg-[#5A3B30] py-3 text-white transition-colors duration-200 hover:bg-[#4E342E]"
         >
-          <Minus size={16} />
-        </button>
-        <span className="border-x border-hairline px-4 py-3 text-sm text-brown">
-          {quantity}
-        </span>
-        <button
-          // Don't let quantity go above available stock.
-          onClick={() => setQuantity((q) => Math.min(stockQuantity, q + 1))}
-          aria-label="Increase quantity"
-          className="px-3 py-3 text-brown-soft transition-colors hover:text-brown"
-        >
-          <Plus size={16} />
+          Add to Cart
         </button>
       </div>
 
-      {/* Add to cart — darker brown with a hover shade and smooth transition */}
-      <button className="flex-1 rounded-md bg-[#5A3B30] py-3 text-white transition-colors duration-200 hover:bg-[#4E342E]">
-        Add to Cart
-      </button>
+      {/* Confirmation toast — appears after adding */}
+      {showToast && (
+        <div className="mt-4 rounded-lg border border-hairline bg-white p-4">
+          <div className="mb-3 flex items-center gap-2 text-sm text-brown">
+            <CheckCircle size={18} className="text-green-600" />
+            Added to cart
+          </div>
+          <div className="flex gap-3">
+            <Link
+              href="/shop"
+              className="flex-1 rounded-md border border-brown py-2.5 text-center text-sm text-brown transition-colors hover:bg-brown hover:text-white"
+            >
+              Continue Shopping
+            </Link>
+            <Link
+              href="/cart"
+              className="flex-1 rounded-md bg-brown py-2.5 text-center text-sm text-white transition-colors hover:bg-[#4E342E]"
+            >
+              View Cart
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

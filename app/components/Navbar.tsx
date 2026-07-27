@@ -1,12 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X, ShoppingBag } from "lucide-react";
 import InstagramIcon from "./InstagramIcon";
+import { useCart } from "../context/CartContext";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { totalItems } = useCart();
+  // Only show the cart badge after the component has mounted in the browser,
+  // so the server and client render the same thing (avoids hydration mismatch).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const links = [
     { label: "Shop", href: "/shop" },
@@ -48,9 +54,14 @@ export default function Navbar() {
           <Link
             href="/cart"
             aria-label="Cart"
-            className="transition-colors hover:text-gold"
+            className="relative transition-colors hover:text-gold"
           >
             <ShoppingBag size={19} />
+            {mounted && totalItems > 0 && (
+              <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose px-1 text-[10px] text-rose-text">
+                {totalItems}
+              </span>
+            )}
           </Link>
         </div>
       </div>

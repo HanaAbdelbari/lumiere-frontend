@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
+import { Ruler } from "lucide-react";
 import ProductGallery from "../../components/ProductGallery";
 import AddToCartSection from "../../components/AddToCartSection";
+import RelatedProducts from "../../components/RelatedProducts";
 
 type ProductDetail = {
   id: number;
@@ -71,7 +73,7 @@ export default async function ProductPage({
                 <span className="text-lg text-muted line-through">
                   EGP {product.price}
                 </span>
-                <span className="rounded-full bg-[#B23A3A] px-2 py-1 text-xs text-white">
+                <span className="rounded-full bg-[#A55B4B] px-2 py-1 text-xs text-white">
                   -{product.discountPercent}%
                 </span>
               </>
@@ -104,6 +106,18 @@ export default async function ProductPage({
             </p>
           )}
 
+          {/* Size note — shown only for products that have a size (e.g. rings).
+              A clear pink box so the customer knows to write their size. */}
+          {product.size && (
+            <div className="mt-4 flex items-start gap-2 rounded-lg bg-[#F8F2EC] p-3">
+              <Ruler size={16} className="mt-0.5 flex-shrink-0 text-brown-soft" />
+              <p className="text-sm text-brown-soft">
+                Available in multiple sizes — write your preferred size in the
+                order notes at checkout.
+              </p>
+            </div>
+          )}
+
           {/* Stock label */}
           <p
             className={`mt-6 mb-3 text-xs ${
@@ -115,11 +129,22 @@ export default async function ProductPage({
 
           {/* Quantity + Add to cart (right after the description) */}
           <AddToCartSection
+            id={product.id}
+            slug={product.slug}
+            name={product.name}
+            price={product.onSale ? product.salePrice! : product.price}
+            imageUrl={product.images[0] ?? null}
+            attributes={attributes.map((a) => a.value).join(" · ")}
             inStock={product.inStock}
             stockQuantity={product.stockQuantity}
           />
         </div>
       </div>
+
+      <RelatedProducts
+        categorySlug={product.categorySlug}
+        currentSlug={product.slug}
+      />
     </main>
   );
 }

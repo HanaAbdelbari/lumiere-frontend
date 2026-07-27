@@ -4,6 +4,7 @@ import "./globals.css";
 import AnnouncementBar from "./components/AnnouncementBar";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { CartProvider } from "./context/CartContext";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -30,10 +31,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${cormorant.variable} ${inter.variable} font-sans`}>
         {/* These appear on every page, above the page content. */}
-        <AnnouncementBar />
-        <Navbar />
-        {children}
-        <Footer />
+        <CartProvider>
+          <AnnouncementBar />
+          <Navbar />
+          {children}
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );
