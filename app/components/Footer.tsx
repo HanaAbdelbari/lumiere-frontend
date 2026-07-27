@@ -5,7 +5,7 @@ import { MessageCircle } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-hairline bg-white">
+    <footer className="border-t border-hairline bg-cream">
       <div className="mx-auto max-w-5xl px-4 py-10">
         {/* Logo */}
         <div className="mb-8 text-center font-serif text-xl font-medium tracking-[0.3em] text-brown">
@@ -45,7 +45,7 @@ export default function Footer() {
             <h3 className="mb-3 text-sm font-medium text-brown">Support</h3>
             <ul className="space-y-2 text-sm text-brown-soft">
               <li>
-                <a href="https://wa.me/201066826143" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-gold">
+                <a href="https://wa.me/2010XXXXXXXX" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-gold">
                   WhatsApp
                 </a>
               </li>
@@ -55,7 +55,7 @@ export default function Footer() {
 
         {/* Bottom line */}
         <div className="mt-8 border-t border-hairline pt-6 text-center text-xs text-muted">
-         Designed by Hana Abdelbari
+          © 2026 Lumière. All Rights Reserved.
         </div>
       </div>
     </footer>

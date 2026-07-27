@@ -31,7 +31,7 @@ export default function ProductCard({ product }: { product: Product }) {
         )}
 
         {product.onSale && (
-          <span className="absolute right-2 top-2 rounded-full bg-[#A55B4B] px-2.5 py-1 text-xs text-white">
+          <span className="absolute right-2 top-2 rounded-full bg-[#8F473A] px-2.5 py-1 text-xs text-white">
             -{product.discountPercent}%
           </span>
         )}

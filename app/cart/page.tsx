@@ -77,48 +77,47 @@ export default function CartPage() {
 
             {/* Details */}
             <div className="flex flex-1 flex-col">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="font-serif text-lg text-brown">{item.name}</h3>
-                  {item.attributes && (
-                    <p className="text-xs text-brown-soft">{item.attributes}</p>
-                  )}
-                </div>
-                <button
-                  onClick={() => setConfirmId(item.id)}
-                  aria-label="Remove item"
-                  className="text-muted transition-colors hover:text-[#A55B4B]"
-                >
-                  <Trash2 size={18} />
-                </button>
+              <div>
+                <h3 className="font-serif text-lg text-brown">{item.name}</h3>
+                {item.attributes && (
+                  <p className="text-xs text-brown-soft">{item.attributes}</p>
+                )}
               </div>
 
               <div className="mt-auto flex items-center justify-between">
                 {/* Quantity */}
-                <div className="flex items-center rounded-md border border-hairline">
-                  <button
-                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                    aria-label="Decrease"
-                    className="px-2 py-1.5 text-brown-soft hover:text-brown"
-                  >
-                    <Minus size={14} />
-                  </button>
-                  <span className="border-x border-hairline px-3 py-1.5 text-sm text-brown">
-                    {item.quantity}
+<div className="flex items-center gap-3">
+                  <div className="flex items-center rounded-md border border-hairline">
+                    <button
+                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      aria-label="Decrease"
+                      className="px-3 py-2 text-brown-soft hover:text-brown"
+                    >
+                      <Minus size={16} />
+                    </button>
+                    <span className="border-x border-hairline px-4 py-2 text-base text-brown">
+                      {item.quantity}
+                    </span>
+                    <button
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      aria-label="Increase"
+                      className="px-3 py-2 text-brown-soft hover:text-brown"
+                    >
+                      <Plus size={16} />
+                    </button>
+                  </div>
+                  {/* Line total — right next to the quantity */}
+                  <span className="font-semibold text-brown">
+                    EGP {item.price * item.quantity}
                   </span>
                   <button
-                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                    aria-label="Increase"
-                    className="px-2 py-1.5 text-brown-soft hover:text-brown"
+                    onClick={() => setConfirmId(item.id)}
+                    aria-label="Remove item"
+                    className="ml-auto text-muted transition-colors hover:text-[#8F473A]"
                   >
-                    <Plus size={14} />
+                    <Trash2 size={18} />
                   </button>
                 </div>
-
-                {/* Line total */}
-                <span className="font-medium text-brown">
-                  EGP {item.price * item.quantity}
-                </span>
               </div>
             </div>
           </div>
@@ -126,9 +125,9 @@ export default function CartPage() {
       </div>
 
       {/* Free shipping progress */}
-      <div className="mt-4 rounded-lg bg-[#F8F2EC] p-4 text-center text-sm">
+      <div className="mt-4 rounded-lg bg-cream p-4 text-center text-sm">
         {freeShipping ? (
-          <span className="text-green-700">🎁 You&apos;ve unlocked free shipping!</span>
+          <span className="text-success">🎁 You&apos;ve unlocked free shipping!</span>
         ) : (
           <span className="text-brown-soft">
             Add EGP {remaining} more to get free shipping
@@ -147,7 +146,7 @@ export default function CartPage() {
           <span>Shipping</span>
           <span>
             {freeShipping ? (
-              <span className="text-green-700">FREE</span>
+              <span className="text-success">FREE</span>
             ) : (
               "Calculated at checkout"
             )}
@@ -162,15 +161,15 @@ export default function CartPage() {
       {/* Actions */}
       <Link
         href="/checkout"
-        className="mt-4 block rounded-xl bg-brown py-3.5 text-center text-white transition-colors hover:bg-[#4E342E]"
+        className="mt-4 block rounded-xl bg-[#5B3A2E] py-3.5 text-center text-white transition-colors hover:bg-[#4E342E]"
       >
         Proceed to Checkout
       </Link>
       <Link
         href="/shop"
-        className="mt-3 block text-center text-sm text-brown-soft transition-colors hover:text-gold"
+        className="mt-3 block rounded-xl border border-brown py-3 text-center text-sm text-brown transition-colors hover:bg-brown hover:text-white"
       >
-        ← Continue Shopping
+        Continue Shopping
       </Link>
 
       {/* Remove confirmation dialog */}
@@ -194,7 +193,7 @@ export default function CartPage() {
                   removeItem(itemToRemove.id);
                   setConfirmId(null);
                 }}
-                className="flex-1 rounded-md bg-[#A55B4B] py-2.5 text-sm text-white transition-colors hover:bg-[#8f4d3f]"
+                className="flex-1 rounded-md bg-[#8F473A] py-2.5 text-sm text-white transition-colors hover:bg-[#7a3d31]"
               >
                 Remove
               </button>

@@ -71,7 +71,7 @@ export default function AddToCartSection({
 
         <button
           onClick={handleAdd}
-          className="flex-1 rounded-md bg-[#5A3B30] py-3 text-white transition-colors duration-200 hover:bg-[#4E342E]"
+          className="flex-1 rounded-md bg-[#5B3A2E] py-3 text-white transition-colors duration-200 hover:bg-[#4E342E]"
         >
           Add to Cart
         </button>
@@ -81,7 +81,7 @@ export default function AddToCartSection({
       {showToast && (
         <div className="mt-4 rounded-lg border border-hairline bg-white p-4">
           <div className="mb-3 flex items-center gap-2 text-sm text-brown">
-            <CheckCircle size={18} className="text-green-600" />
+            <CheckCircle size={18} className="text-success" />
             Added to cart
           </div>
           <div className="flex gap-3">

@@ -7,8 +7,10 @@
   --color-gold: #C6A15B;
   --color-rose: #C89CA6;
   --color-rose-text: #5A2E38;
-  --color-sand: #EADBC8;
+  --color-sand: #E5D4BF;
   --color-hairline: #EFE8DF;
+  --color-cream: #F3E9DF;
+  --color-success: #6B7F5E;
 
   --font-serif: var(--font-cormorant), serif;
   --font-sans: var(--font-inter), sans-serif;
