@@ -120,12 +120,23 @@ export default async function ProductPage({
 
           {/* Stock label */}
           <p
-            className={`mt-6 mb-3 text-xs ${
+            className={`mt-6 text-xs ${
               product.inStock ? "text-success" : "text-muted"
             }`}
           >
             {product.inStock ? "● In stock" : "Out of stock"}
           </p>
+
+          {/* Low-stock warning — only when 1–3 pieces are left */}
+          {product.inStock &&
+          product.stockQuantity > 0 &&
+          product.stockQuantity <= 3 ? (
+            <p className="mt-1 mb-3 text-xs text-[#8F473A]">
+              Only {product.stockQuantity} left
+            </p>
+          ) : (
+            <div className="mb-3" />
+          )}
 
           {/* Quantity + Add to cart (right after the description) */}
           <AddToCartSection
