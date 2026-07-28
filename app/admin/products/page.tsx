@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useAdminAuth } from "../../context/AdminAuthContext";
-import { Pencil, Trash2, Plus } from "lucide-react";
+import { Pencil, Trash2, Plus, RotateCcw } from "lucide-react";
 
 type AdminProduct = {
   id: number;
@@ -75,6 +75,17 @@ export default function AdminProductsPage() {
     );
   }
 
+  async function handleRestore(id: number) {
+    if (!token) return;
+    await fetch(`http://localhost:8080/api/admin/products/${id}/restore`, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setProducts((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, isActive: true } : p))
+    );
+  }
+
   const productToDelete = products.find((p) => p.id === confirmId);
 
   if (!mounted || !isLoggedIn) return null;
@@ -137,13 +148,22 @@ export default function AdminProductsPage() {
               >
                 <Pencil size={16} />
               </Link>
-              {p.isActive && (
+              {p.isActive ? (
                 <button
                   onClick={() => setConfirmId(p.id)}
-                  aria-label="Delete"
+                  aria-label="Hide"
                   className="text-brown-soft transition-colors hover:text-[#8F473A]"
                 >
                   <Trash2 size={16} />
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleRestore(p.id)}
+                  aria-label="Restore"
+                  className="text-brown-soft transition-colors hover:text-success"
+                  title="Restore to store"
+                >
+                  <RotateCcw size={16} />
                 </button>
               )}
             </div>
