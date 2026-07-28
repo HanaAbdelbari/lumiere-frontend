@@ -33,6 +33,13 @@ export default function AdminOrdersPage() {
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<number | null>(null);
 
+  // Only render after mounting in the browser (this page depends on the
+  // stored token and formats dates locally) — avoids hydration mismatch.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Protect the page: if not logged in, go to login.
   useEffect(() => {
     if (!isLoggedIn) router.replace("/admin");
@@ -90,7 +97,7 @@ export default function AdminOrdersPage() {
     fetchOrders(token); // refresh
   }
 
-  if (!isLoggedIn) return null;
+  if (!mounted || !isLoggedIn) return null;
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-8">
