@@ -3,11 +3,15 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     // Next.js only loads images from domains you allow here (for security).
-    // Our test images come from Unsplash. Later, add your Cloudinary domain too.
+    // Unsplash = temporary test images. Cloudinary = your real product images.
     remotePatterns: [
       {
         protocol: "https",
         hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
       },
     ],
   },

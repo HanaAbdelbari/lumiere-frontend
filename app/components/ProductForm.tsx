@@ -26,6 +26,9 @@ export default function ProductForm({ productId }: { productId?: number }) {
   const [slugEdited, setSlugEdited] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  // Uploaded image URLs (from Cloudinary) + upload-in-progress flag.
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
 
   const [form, setForm] = useState({
     categoryId: "",
@@ -39,7 +42,6 @@ export default function ProductForm({ productId }: { productId?: number }) {
     chainLength: "",
     stockQuantity: "0",
     displayOrder: "0",
-    imageUrls: "",
   });
 
   useEffect(() => {
@@ -74,8 +76,8 @@ export default function ProductForm({ productId }: { productId?: number }) {
           chainLength: detail.chainLength ?? "",
           stockQuantity: String(detail.stockQuantity ?? 0),
           displayOrder: String(detail.displayOrder ?? 0),
-          imageUrls: (detail.images ?? []).join("\n"),
         });
+        setImageUrls(detail.images ?? []);
         setSlugEdited(true);
       })
       .catch(() => {});
@@ -90,6 +92,39 @@ export default function ProductForm({ productId }: { productId?: number }) {
       }
       return next;
     });
+  }
+
+  // Upload a chosen file to the backend (which stores it on Cloudinary),
+  // then add the returned URL to the list.
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file || !token) return;
+    setUploading(true);
+    setError("");
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      const res = await fetch("http://localhost:8080/api/admin/upload", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: data,
+      });
+      if (!res.ok) {
+        setError("Image upload failed.");
+        return;
+      }
+      const result = await res.json();
+      setImageUrls((prev) => [...prev, result.url]);
+    } catch {
+      setError("Image upload failed.");
+    } finally {
+      setUploading(false);
+      e.target.value = ""; // allow re-selecting the same file
+    }
+  }
+
+  function removeImage(index: number) {
+    setImageUrls((prev) => prev.filter((_, i) => i !== index));
   }
 
   async function save() {
@@ -112,10 +147,7 @@ export default function ProductForm({ productId }: { productId?: number }) {
       chainLength: form.chainLength || null,
       stockQuantity: Number(form.stockQuantity),
       displayOrder: Number(form.displayOrder),
-      imageUrls: form.imageUrls
-        .split("\n")
-        .map((u) => u.trim())
-        .filter((u) => u.length > 0),
+      imageUrls: imageUrls,
     };
 
     const url = productId
@@ -220,10 +252,37 @@ export default function ProductForm({ productId }: { productId?: number }) {
         </div>
       </div>
 
-      <label className={labelC}>Image URLs (one per line)</label>
-      <textarea className={input} rows={3} value={form.imageUrls}
-        placeholder="https://...&#10;https://..."
-        onChange={(e) => update("imageUrls", e.target.value)} />
+      <label className={labelC}>Images</label>
+      <div className="mt-1 flex flex-wrap gap-2">
+        {imageUrls.map((url, i) => (
+          <div key={i} className="relative h-20 w-20 overflow-hidden rounded-md border border-hairline">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={url} alt={`Image ${i + 1}`} className="h-full w-full object-cover" />
+            <button
+              type="button"
+              onClick={() => removeImage(i)}
+              className="absolute right-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-black/60 text-xs text-white"
+            >
+              ×
+            </button>
+          </div>
+        ))}
+
+        {/* Upload button */}
+        <label className="flex h-20 w-20 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-hairline text-xs text-brown-soft hover:border-brown">
+          {uploading ? "Uploading..." : "+ Add"}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            disabled={uploading}
+            className="hidden"
+          />
+        </label>
+      </div>
+      <p className="mt-1 text-xs text-muted">
+        The first image is the main one shown on cards.
+      </p>
 
       {error && <p className="mt-3 text-sm text-[#8F473A]">{error}</p>}
 
