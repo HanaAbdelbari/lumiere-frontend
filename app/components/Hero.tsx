@@ -19,8 +19,8 @@ export default function Hero() {
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/20 to-black/10" />
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 px-4 text-center">
-        <h1 className="hero-fade font-serif text-4xl text-white drop-shadow md:text-6xl">
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-4 text-center">
+        <h1 className="hero-fade font-serif text-4xl font-light text-white drop-shadow md:text-5xl">
           Shine Every Moment
         </h1>
 
@@ -29,7 +29,7 @@ export default function Hero() {
         {/* Bigger primary CTA */}
         <Link
           href="/shop"
-          className="hero-fade-delayed rounded-xl bg-brown px-10 py-3.5 text-base tracking-wide text-white transition-colors hover:bg-[#6D4638]"
+          className="hero-fade-delayed rounded-md bg-brown px-8 py-3 text-sm tracking-wide text-white transition-all hover:-translate-y-0.5 hover:bg-[#5A3E36]"
         >
           Shop Now
         </Link>

@@ -49,36 +49,42 @@ export default async function ProductPage({
   ].filter((a) => a.value); // keep only the ones that have a value
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-8">
+    <main className="mx-auto max-w-5xl px-6 py-5">
       {/* Breadcrumb — slightly larger for readability */}
-      <div className="mb-4 text-sm text-muted">
+      <div className="mb-3 text-sm text-brown-soft">
         Home › {product.categoryName} › {product.name}
       </div>
 
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="grid gap-4 md:gap-10 md:grid-cols-[44%_56%] items-start">
         {/* Left: image gallery */}
-        <ProductGallery images={product.images} name={product.name} />
+        <ProductGallery
+          images={product.images}
+          name={product.name}
+          onSale={product.onSale}
+          discountPercent={product.discountPercent}
+        />
 
         {/* Right: product info */}
         <div>
-          <h1 className="font-serif text-2xl text-brown">{product.name}</h1>
+          <h1 className="font-serif text-lg  text-brown">{product.name}</h1>
 
           {/* Price */}
-          <div className="mt-3 flex items-center gap-3">
+          <div className="mt-1 flex items-center gap-3">
             {product.onSale ? (
               <>
-                <span className="text-2xl font-medium text-brown">
+                <span className="text-lg  font-medium text-brown">
                   EGP {product.salePrice}
                 </span>
-                <span className="text-lg text-muted line-through">
+
+                <span className="text-sm text-muted line-through">
                   EGP {product.price}
                 </span>
-                <span className="rounded-full bg-[#8F473A] px-2 py-1 text-xs text-white">
+                <span className="rounded-full bg-brown px-2 py-0.5 text-[10px] font-medium text-white">
                   -{product.discountPercent}%
                 </span>
               </>
             ) : (
-              <span className="text-2xl font-medium text-brown">
+              <span className="text-lg  font-medium text-brown">
                 EGP {product.price}
               </span>
             )}
@@ -86,14 +92,14 @@ export default async function ProductPage({
 
           {/* Attributes as small cards — only the ones that exist */}
           {attributes.length > 0 && (
-            <div className="mt-6 grid grid-cols-2 gap-3">
+            <div className="mt-2 flex flex-wrap gap-2">
               {attributes.map((attr) => (
                 <div
                   key={attr.label}
-                  className="rounded-lg bg-[#F8F2EC] p-3"
+                  className="rounded-full border border-hairline px-3 py-1.5"
                 >
-                  <div className="text-xs text-brown-soft">{attr.label}</div>
-                  <div className="mt-1 text-sm text-brown">{attr.value}</div>
+                  <span className="text-xs text-muted">{attr.label}: </span>
+                  <span className="text-xs text-brown">{attr.value}</span>
                 </div>
               ))}
             </div>
@@ -101,42 +107,23 @@ export default async function ProductPage({
 
           {/* Description */}
           {product.description && (
-            <p className="mt-6 text-sm leading-relaxed text-brown-soft">
+            <p className="mt-2 text-xs leading-relaxed text-brown-soft">
               {product.description}
             </p>
           )}
 
-          {/* Size note — shown only for products that have a size (e.g. rings).
-              A clear pink box so the customer knows to write their size. */}
-          {product.size && (
-            <div className="mt-4 flex items-start gap-2 rounded-lg bg-[#F8F2EC] p-3">
-              <Ruler size={16} className="mt-0.5 flex-shrink-0 text-brown-soft" />
-              <p className="text-sm text-brown-soft">
-                Available in multiple sizes — write your preferred size in the
-                order notes at checkout.
-              </p>
-            </div>
-          )}
-
-          {/* Stock label */}
-          <p
-            className={`mt-6 text-xs ${
-              product.inStock ? "text-success" : "text-muted"
-            }`}
-          >
-            {product.inStock ? "● In stock" : "Out of stock"}
-          </p>
-
-          {/* Low-stock warning — only when 1–3 pieces are left */}
-          {product.inStock &&
-          product.stockQuantity > 0 &&
-          product.stockQuantity <= 3 ? (
-            <p className="mt-1 mb-3 text-xs text-[#8F473A]">
-              Only {product.stockQuantity} left
-            </p>
-          ) : (
-            <div className="mb-3" />
-          )}
+          {/* Stock status */}
+          <div className="mt-3 mb-2">
+            {product.inStock ? (
+              product.stockQuantity > 0 && product.stockQuantity <= 3 && (
+                <p className="text-sm font-medium text-error">
+                  Only {product.stockQuantity} pieces remaining
+                </p>
+              )
+            ) : (
+              <p className="text-sm text-muted">Out of stock</p>
+            )}
+          </div>
 
           {/* Quantity + Add to cart (right after the description) */}
           <AddToCartSection

@@ -49,29 +49,29 @@ export default function AddToCartSection({
     <div>
       <div className="flex items-center gap-4">
         {/* Quantity stepper */}
-        <div className="flex items-center rounded-md border border-hairline">
+        <div className="flex items-center gap-3 rounded-lg border border-hairline px-3 py-2.5">
           <button
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
             aria-label="Decrease quantity"
-            className="px-3 py-3 text-brown-soft transition-colors hover:text-brown"
+            className="text-brown-soft transition-colors hover:text-brown"
           >
-            <Minus size={16} />
+            <Minus size={16} strokeWidth={1.5} />
           </button>
-          <span className="border-x border-hairline px-4 py-3 text-sm text-brown">
+          <span className="min-w-[1.5rem] text-center text-sm text-brown">
             {quantity}
           </span>
           <button
             onClick={() => setQuantity((q) => Math.min(stockQuantity, q + 1))}
             aria-label="Increase quantity"
-            className="px-3 py-3 text-brown-soft transition-colors hover:text-brown"
+            className="text-brown-soft transition-colors hover:text-brown"
           >
-            <Plus size={16} />
+            <Plus size={16} strokeWidth={1.5} />
           </button>
         </div>
 
         <button
           onClick={handleAdd}
-          className="flex-1 rounded-md bg-[#5B3A2E] py-3 text-white transition-colors duration-200 hover:bg-[#4E342E]"
+          className="flex-1 rounded-lg bg-brown py-3.5 text-sm tracking-wide text-white transition-all hover:-translate-y-0.5 hover:bg-[#553528]"
         >
           Add to Cart
         </button>

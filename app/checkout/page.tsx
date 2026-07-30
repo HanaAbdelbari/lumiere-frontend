@@ -13,8 +13,13 @@ const GOVERNORATES = [
 ];
 
 const FREE_SHIPPING_THRESHOLD = 800;
-const CAIRO_GIZA_FEE = 70;
-const OTHER_FEE = 90;
+
+// فئات الشحن
+const CAIRO_GIZA = new Set(["cairo", "giza"]);
+const CANAL_DAMIETTA = new Set(["ismailia", "suez", "port said", "damietta"]);
+const UPPER_EGYPT = new Set([
+  "fayoum", "beni suef", "minya", "assiut", "sohag", "qena", "luxor", "aswan"
+]);
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -40,8 +45,14 @@ export default function CheckoutPage() {
   function estimatedShipping(): number | null {
     if (totalPrice >= FREE_SHIPPING_THRESHOLD) return 0;
     if (!form.governorate) return null; // unknown until governorate chosen
-    const g = form.governorate.toLowerCase();
-    return g === "cairo" || g === "giza" ? CAIRO_GIZA_FEE : OTHER_FEE;
+    
+    const g = form.governorate.trim().toLowerCase();
+
+    if (CAIRO_GIZA.has(g)) return 75;
+    if (CANAL_DAMIETTA.has(g)) return 95;
+    if (UPPER_EGYPT.has(g)) return 110;
+
+    return 90; // باقي المحافظات
   }
 
   const shipping = estimatedShipping();

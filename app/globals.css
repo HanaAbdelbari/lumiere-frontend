@@ -1,19 +1,36 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brown: #4E342E;
-  --color-brown-soft: #8A6D52;
-  --color-muted: #B0A08F;
-  --color-gold: #C6A15B;
-  --color-rose: #C89CA6;
-  --color-rose-text: #5A2E38;
-  --color-sand: #E5D4BF;
-  --color-hairline: #EFE8DF;
-  --color-cream: #F3E9DF;
-  --color-success: #6B7F5E;
+  /* ---- Two-color identity ---- */
+  /* Primary brown — used for buttons, icons, titles, links, key borders, hover. */
+  --color-brown: #6B4A3A;
+  /* A softer brown ONLY for secondary text (kept subtle, not a third color). */
+  --color-brown-soft: #6F5847;
+  /* Very light neutrals for hairlines and rare surfaces. */
+  --color-muted: #9B8D7E;
+  --color-hairline: #DED6CC;
+
+  /* ---- Status colors (the only accents allowed) ---- */
+  --color-success: #3F8C55;
+  --color-error: #D64545;
+  --color-warning: #C78A2D;
+
+  /* ---- Legacy tokens kept as neutral so old classes don't break ---- */
+  /* (These now resolve toward the two-color scheme instead of extra hues.) */
+  --color-gold: #6B4A3A;
+  --color-rose: #6B4A3A;
+  --color-rose-text: #6B4A3A;
+  --color-sand: #ECE7E1;
+  --color-cream: #FFFFFF;
 
   --font-serif: var(--font-cormorant), serif;
-  --font-sans: var(--font-inter), sans-serif;
+  --font-sans: var(--font-sans-custom), sans-serif;
+  --font-logo: var(--font-logo), serif;
+}
+
+/* Logo — Bodoni Moda, used only for the LUMIÈRE wordmark. */
+.font-logo {
+  font-family: var(--font-logo);
 }
 
 body {

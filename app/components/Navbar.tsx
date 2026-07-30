@@ -9,10 +9,13 @@ import { useCart } from "../context/CartContext";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { totalItems } = useCart();
+
   // Only show the cart badge after the component has mounted in the browser,
   // so the server and client render the same thing (avoids hydration mismatch).
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const links = [
     { label: "Shop", href: "/shop" },
@@ -24,24 +27,24 @@ export default function Navbar() {
 
   return (
     <header className="border-b border-hairline bg-white">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-2.5">
         <button
           onClick={() => setIsOpen(true)}
           aria-label="Open menu"
           className="text-brown transition-colors hover:text-gold"
         >
-          <Menu size={22} />
+          <Menu size={22} strokeWidth={1.5} />
         </button>
 
         {/* Logo — wider letter spacing, medium weight for a refined look */}
         <Link
           href="/"
-          className="font-serif text-2xl font-medium tracking-[0.35em] text-brown"
+          className="font-logo text-[1.85rem] tracking-[0.32em] text-brown"
         >
           LUMIÈRE
         </Link>
 
-        <div className="flex items-center gap-4 text-brown">
+        <div className="flex items-center gap-5 text-brown">
           <a
             href="https://instagram.com/lumiereaccessories.lu"
             target="_blank"
@@ -49,20 +52,20 @@ export default function Navbar() {
             aria-label="Instagram"
             className="transition-colors hover:text-gold"
           >
-            <InstagramIcon size={19} />
+            <InstagramIcon size={22} />
           </a>
           <Link
-            href="/cart"
-            aria-label="Cart"
-            className="relative transition-colors hover:text-gold"
-          >
-            <ShoppingBag size={19} />
-            {mounted && totalItems > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose px-1 text-[10px] text-rose-text">
-                {totalItems}
-              </span>
-            )}
-          </Link>
+  href="/cart"
+  aria-label="Cart"
+  className="relative transition-colors hover:text-gold"
+>
+  <ShoppingBag size={22} strokeWidth={1.5} />
+  {mounted && totalItems > 0 && (
+    <span className="absolute -right-2 -top-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-brown px-1 text-[10px] font-semibold text-white leading-none z-10">
+      {totalItems}
+    </span>
+  )}
+</Link>
         </div>
       </div>
 
@@ -80,7 +83,7 @@ export default function Navbar() {
         }`}
       >
         <div className="flex items-center justify-between border-b border-hairline px-5 py-4">
-          <span className="font-serif text-lg font-medium tracking-[0.3em] text-brown">
+          <span className="font-logo text-lg tracking-[0.3em] text-brown">
             LUMIÈRE
           </span>
           <button

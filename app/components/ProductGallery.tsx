@@ -1,24 +1,25 @@
 "use client"; // interactive: clicking a thumbnail changes the big image
 
-import Image from "next/image";
 import { useState } from "react";
+import Image from "next/image";
 
-// Receives the list of image URLs and the product name (for alt text).
 export default function ProductGallery({
   images,
   name,
+  onSale,
+  discountPercent,
 }: {
   images: string[];
   name: string;
+  onSale?: boolean;
+  discountPercent?: number | null;
 }) {
   // "selected" remembers which image is the big one right now.
-  // It starts at 0 (the first/main image).
   const [selected, setSelected] = useState(0);
 
-  // If there are no images, show nothing.
-  if (images.length === 0) {
+  if (!images || images.length === 0) {
     return (
-      <div className="flex aspect-square items-center justify-center rounded-lg border border-hairline bg-white text-muted">
+      <div className="flex aspect-[4/5] items-center justify-center rounded-2xl border border-hairline bg-white text-muted">
         No image
       </div>
     );
@@ -26,8 +27,8 @@ export default function ProductGallery({
 
   return (
     <div>
-      {/* Big image — shows whichever thumbnail is selected */}
-      <div className="relative aspect-square overflow-hidden rounded-lg border border-hairline bg-white">
+      {/* Big image — shorter, rounded, with the discount badge */}
+      <div className="relative mx-auto aspect-[4/5] w-full max-w-[420px] overflow-hidden rounded-2xl border border-hairline bg-white shadow-sm">
         <Image
           src={images[selected]}
           alt={name}
@@ -36,17 +37,24 @@ export default function ProductGallery({
           sizes="(max-width: 768px) 100vw, 50vw"
           priority
         />
+        {onSale && discountPercent && (
+          <span className="absolute right-3 top-3 rounded-full bg-brown px-2.5 py-1 text-[11px] font-medium text-white">
+            -{discountPercent}%
+          </span>
+        )}
       </div>
 
       {/* Thumbnails row — only show if there's more than one image */}
       {images.length > 1 && (
-        <div className="mt-3 flex gap-2">
+        <div className="mt-2 flex gap-2">
           {images.map((img, i) => (
             <button
               key={i}
-              onClick={() => setSelected(i)} // clicking sets this as the big image
-              className={`relative h-16 w-16 overflow-hidden rounded-md border ${
-                selected === i ? "border-brown" : "border-hairline"
+              onClick={() => setSelected(i)}
+              className={`relative h-16 w-16 overflow-hidden rounded-xl border transition-all duration-200 ${
+                selected === i
+  ? "border-brown shadow-sm"
+  : "border-hairline hover:border-brown-soft"
               }`}
               aria-label={`View image ${i + 1}`}
             >
