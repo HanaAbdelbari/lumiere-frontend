@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useCart } from "../context/CartContext";
 
-// Egypt governorates for the dropdown.
+// Egypt governorates for the dropdown
 const GOVERNORATES = [
   "Cairo", "Giza", "Alexandria", "Dakahlia", "Red Sea", "Beheira", "Fayoum",
   "Gharbia", "Ismailia", "Menofia", "Minya", "Qalyubia", "New Valley", "Suez",
@@ -14,7 +15,7 @@ const GOVERNORATES = [
 
 const FREE_SHIPPING_THRESHOLD = 800;
 
-// فئات الشحن
+// Shipping Categories
 const CAIRO_GIZA = new Set(["cairo", "giza"]);
 const CANAL_DAMIETTA = new Set(["ismailia", "suez", "port said", "damietta"]);
 const UPPER_EGYPT = new Set([
@@ -41,18 +42,18 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  // Estimated shipping for display (backend is the source of truth).
+  // Estimated shipping for display (backend is the source of truth)
   function estimatedShipping(): number | null {
     if (totalPrice >= FREE_SHIPPING_THRESHOLD) return 0;
-    if (!form.governorate) return null; // unknown until governorate chosen
-    
+    if (!form.governorate) return null;
+
     const g = form.governorate.trim().toLowerCase();
 
     if (CAIRO_GIZA.has(g)) return 75;
     if (CANAL_DAMIETTA.has(g)) return 95;
     if (UPPER_EGYPT.has(g)) return 110;
 
-    return 90; // باقي المحافظات
+    return 90; // Rest of Egypt
   }
 
   const shipping = estimatedShipping();
@@ -65,7 +66,6 @@ export default function CheckoutPage() {
 
   async function placeOrder() {
     setError("");
-    // Basic validation
     if (!form.fullName || !form.phone || !form.governorate || !form.address) {
       setError("Please fill in all required fields.");
       return;
@@ -93,8 +93,7 @@ export default function CheckoutPage() {
       if (!res.ok) throw new Error("Failed to place order");
 
       const order = await res.json();
-      clearCart(); // empty the cart after a successful order
-      // Go to the success page with the order number.
+      clearCart();
       router.push(`/order-success?order=${order.orderNumber}`);
     } catch {
       setError("Something went wrong. Please try again.");
@@ -103,110 +102,177 @@ export default function CheckoutPage() {
   }
 
   if (!mounted) {
-    return <main className="mx-auto max-w-lg px-4 py-20" />;
+    return <main className="mx-auto max-w-5xl px-4 py-20" />;
   }
 
-  // Empty cart — nothing to check out.
   if (items.length === 0) {
     return (
-      <main className="mx-auto max-w-lg px-4 py-20 text-center">
+      <main className="mx-auto max-w-5xl px-4 py-20 text-center">
         <p className="text-brown-soft">Your cart is empty.</p>
       </main>
     );
   }
 
+  const labelClass = "block text-[11px] font-semibold uppercase tracking-wider text-brown-soft mb-1.5";
+  
+  // ⚡ التعديل الرئيسي هنا: تبيين حدود المربعات بشكل أوضح ⚡
   const inputClass =
-    "mt-1 w-full rounded-md border border-hairline bg-white px-3 py-2.5 text-sm text-brown focus:border-brown focus:outline-none";
+    "w-full rounded-lg border border-stone-300 bg-white px-3.5 py-3 text-sm text-brown placeholder:text-stone-400 transition-all hover:border-stone-400 focus:border-brown focus:outline-none focus:ring-1 focus:ring-brown shadow-sm";
 
   return (
-    <main className="mx-auto max-w-lg px-4 py-8">
-      <h1 className="mb-6 font-serif text-3xl text-brown">Checkout</h1>
+    <main className="mx-auto max-w-5xl px-4 py-10">
+      <h1 className="mb-8 font-serif text-3xl text-brown">Checkout</h1>
 
-      {/* Customer info */}
-      <section className="rounded-lg border border-hairline p-4">
-        <h2 className="mb-4 text-sm font-medium text-brown">Customer Information</h2>
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
+        
+        {/* Left Column: Customer Form */}
+        <div className="lg:col-span-7">
+          <section className="rounded-xl border border-stone-200 bg-white p-6 md:p-8 shadow-sm">
+            <h2 className="mb-6 font-serif text-xl text-brown">Customer Information</h2>
 
-        <label className="block text-xs text-brown-soft">Full Name</label>
-        <input className={inputClass} value={form.fullName}
-          onChange={(e) => update("fullName", e.target.value)} />
+            <div className="space-y-5">
+              <div>
+                <label className={labelClass}>Full Name *</label>
+                <input
+                  className={inputClass}
+                  value={form.fullName}
+                  onChange={(e) => update("fullName", e.target.value)}
+                  placeholder="e.g. Sarah Ahmed"
+                />
+              </div>
 
-        <label className="mt-4 block text-xs text-brown-soft">Phone Number</label>
-        <input className={inputClass} value={form.phone}
-          onChange={(e) => update("phone", e.target.value)} />
+              <div>
+                <label className={labelClass}>Phone Number *</label>
+                <input
+                  className={inputClass}
+                  value={form.phone}
+                  onChange={(e) => update("phone", e.target.value)}
+                  placeholder="01xxxxxxxxx"
+                />
+              </div>
 
-        <label className="mt-4 block text-xs text-brown-soft">Governorate</label>
-        <select className={inputClass} value={form.governorate}
-          onChange={(e) => update("governorate", e.target.value)}>
-          <option value="">Select governorate</option>
-          {GOVERNORATES.map((g) => (
-            <option key={g} value={g}>{g}</option>
-          ))}
-        </select>
+              <div>
+                <label className={labelClass}>Governorate *</label>
+                <select
+                  className={inputClass}
+                  value={form.governorate}
+                  onChange={(e) => update("governorate", e.target.value)}
+                >
+                  <option value="">Select governorate</option>
+                  {GOVERNORATES.map((g) => (
+                    <option key={g} value={g}>{g}</option>
+                  ))}
+                </select>
+              </div>
 
-        <label className="mt-4 block text-xs text-brown-soft">Address</label>
-        <textarea className={inputClass} rows={2} value={form.address}
-          onChange={(e) => update("address", e.target.value)} />
+              <div>
+                <label className={labelClass}>Detailed Address *</label>
+                <textarea
+                  className={inputClass}
+                  rows={2.5}
+                  value={form.address}
+                  onChange={(e) => update("address", e.target.value)}
+                  placeholder="Street, Building No., Apartment"
+                />
+              </div>
 
-        <label className="mt-4 block text-xs text-brown-soft">Order Notes (optional)</label>
-        <input className={inputClass} placeholder="e.g. Ring size 7" value={form.notes}
-          onChange={(e) => update("notes", e.target.value)} />
-      </section>
-
-      {/* Order summary */}
-      <section className="mt-4 rounded-lg border border-hairline p-4">
-        <h2 className="mb-3 text-sm font-medium text-brown">Order Summary</h2>
-        <div className="flex justify-between py-1 text-sm text-brown-soft">
-          <span>Products</span>
-          <span>EGP {totalPrice}</span>
+              <div>
+                <label className={labelClass}>Order Notes (optional)</label>
+                <input
+                  className={inputClass}
+                  placeholder="Ring sizes, gift message, or custom notes"
+                  value={form.notes}
+                  onChange={(e) => update("notes", e.target.value)}
+                />
+              </div>
+            </div>
+          </section>
         </div>
-        <div className="flex justify-between py-1 text-sm text-brown-soft">
-          <span>Shipping</span>
-          <span>
-            {shipping === null ? (
-              <span className="italic text-muted">select governorate</span>
-            ) : shipping === 0 ? (
-              <span className="text-success">FREE</span>
-            ) : (
-              `EGP ${shipping}`
-            )}
-          </span>
-        </div>
-        <div className="mt-2 flex justify-between border-t border-hairline pt-3 text-brown">
-          <span className="font-medium">Total</span>
-          <span className="font-medium">
-            EGP {total}{shipping === null && " + shipping"}
-          </span>
-        </div>
-      </section>
 
-      {/* Deposit box */}
-      <section className="mt-4 rounded-lg bg-cream p-4">
-        <div className="flex justify-between text-sm text-brown">
-          <span>Deposit to confirm (50%)</span>
-          <span>EGP {deposit}</span>
+        {/* Right Column: Order Summary & Payment info */}
+        <div className="space-y-5 lg:col-span-5">
+          <section className="rounded-xl border border-stone-200 bg-white p-6 shadow-sm">
+            <h2 className="mb-5 font-serif text-xl text-brown">Order Summary</h2>
+            
+            <div className="space-y-3 text-sm text-brown-soft">
+              <div className="flex justify-between">
+                <span>Products</span>
+                <span className="font-semibold text-brown">EGP {totalPrice}</span>
+              </div>
+              <div className="flex justify-between border-b border-stone-100 pb-3.5">
+                <span>Shipping</span>
+                <span>
+                  {shipping === null ? (
+                    <span className="italic text-stone-400">select governorate</span>
+                  ) : shipping === 0 ? (
+                    <span className="font-semibold text-emerald-600">FREE</span>
+                  ) : (
+                    <span className="font-semibold text-brown">EGP {shipping}</span>
+                  )}
+                </span>
+              </div>
+              <div className="flex justify-between pt-1 font-serif text-lg text-brown">
+                <span>Total</span>
+                <div className="font-bold">
+  <span>EGP {total}</span>
+  {shipping === null && (
+    <span className="ml-1 text-xs font-normal text-stone-500">
+      (+ shipping)
+    </span>
+  )}
+</div>
+              </div>
+            </div>
+          </section>
+
+          {/* Deposit Info Card */}
+          <section className="rounded-xl border border-amber-900/10 bg-[#FAF7F2] p-6">
+            <h3 className="mb-3 text-[11px] font-bold uppercase tracking-wider text-brown">Payment Details</h3>
+            <div className="space-y-1.5">
+              <div className="flex justify-between text-sm text-brown">
+                <span>Deposit to confirm (50%)</span>
+                <span className="font-bold">EGP {deposit}</span>
+              </div>
+              <div className="flex justify-between text-sm text-brown-soft">
+                <span>Remaining on delivery</span>
+                <span>EGP {total - deposit}</span>
+              </div>
+            </div>
+            <p className="mt-4 text-xs leading-relaxed text-stone-500">
+              📌 Vodafone Cash instructions will be displayed immediately after placing the order.
+            </p>
+          </section>
+
+          {/* Store Policy Agreement */}
+          <div className="pt-1 space-y-4">
+            <label className="flex items-center gap-2.5 text-xs text-brown-soft cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={agreed}
+                onChange={(e) => setAgreed(e.target.checked)}
+                className="h-4 w-4 rounded border-stone-300 accent-brown"
+              />
+              <span>
+                I have read and agree to the{" "}
+                <Link href="/policy" target="_blank" className="underline font-medium hover:text-brown">
+                  Store Policy
+                </Link>
+              </span>
+            </label>
+
+            {error && <p className="text-xs font-medium text-rose-700">{error}</p>}
+
+            <button
+              onClick={placeOrder}
+              disabled={submitting}
+              className="w-full rounded-xl bg-brown py-4 text-sm font-semibold tracking-wide text-white shadow-sm transition-all hover:bg-[#4E342E] active:scale-[0.99] disabled:opacity-50"
+            >
+              {submitting ? "Placing order..." : "Place Order"}
+            </button>
+          </div>
+
         </div>
-        <div className="mt-1 flex justify-between text-sm text-brown">
-          <span>Remaining on delivery</span>
-          <span>EGP {total - deposit}</span>
-        </div>
-        <p className="mt-2 text-xs italic text-brown-soft">
-          Payment instructions come after you place the order.
-        </p>
-      </section>
-
-      {/* Agree + place order */}
-      <label className="mt-4 flex items-start gap-2 text-sm text-brown-soft">
-        <input type="checkbox" checked={agreed}
-          onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5" />
-        <span>I have read and agree to the Store Policy</span>
-      </label>
-
-      {error && <p className="mt-3 text-sm text-[#8F473A]">{error}</p>}
-
-      <button onClick={placeOrder} disabled={submitting}
-        className="mt-4 w-full rounded-xl bg-brown py-3.5 text-white transition-colors hover:bg-[#4E342E] disabled:opacity-50">
-        {submitting ? "Placing order..." : "Place Order"}
-      </button>
+      </div>
     </main>
   );
 }

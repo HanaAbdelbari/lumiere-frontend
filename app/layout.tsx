@@ -17,7 +17,6 @@ const jakarta = Plus_Jakarta_Sans({
   variable: "--font-sans-custom",
 });
 
-// Bodoni Moda — used ONLY for the LUMIÈRE logo (fashion-house feel).
 const bodoni = Bodoni_Moda({
   subsets: ["latin"],
   weight: ["400", "500"],
@@ -36,8 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${cormorant.variable} ${jakarta.variable} ${bodoni.variable} font-sans`}>
-        {/* These appear on every page, above the page content. */}
+      <body className={`${cormorant.variable} ${jakarta.variable} ${bodoni.variable} font-sans bg-white text-stone-800 antialiased`}>
         <CartProvider>
           <AnnouncementBar />
           <Navbar />
