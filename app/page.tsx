@@ -96,7 +96,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* New Arrivals */}
+      {/* New Arrivals - تم إضافة .slice(0, 4) لعرض 4 منتجات فقط */}
       {products.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6 sm:pb-20">
           <div className="mb-10 text-center">
@@ -110,7 +110,7 @@ export default async function HomePage() {
               products.length < 4 ? "justify-center max-w-3xl mx-auto" : ""
             }`}
           >
-            {products.map((product) => (
+            {products.slice(0, 4).map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
