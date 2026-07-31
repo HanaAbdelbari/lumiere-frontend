@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Hero() {
   const heroImage =
-    "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1600";
+    "https://res.cloudinary.com/rpcf6czj/image/upload/v1785497136/%D8%BA%D9%84%D8%A7%D9%81_%D9%87%D9%8A%D8%B1%D9%88_lfic4u.jpg";
 
   return (
     <section className="relative h-[65vh] min-h-[420px] w-full overflow-hidden md:h-[75vh]">

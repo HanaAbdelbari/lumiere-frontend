@@ -153,15 +153,59 @@ export default async function HomePage() {
       {/* About Lumière */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
         <div className="flex flex-col items-center gap-8 md:flex-row md:gap-12">
-          <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-stone-200/60 shadow-sm md:h-80 md:w-1/2">
-            <Image
-              src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800"
-              alt="About Lumière"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
+          
+          {/* 4 Images Grid Collage */}
+          <div className="w-full md:w-1/2 flex justify-center">
+            <div className="grid grid-cols-2 gap-2 p-2 bg-stone-100 rounded-3xl overflow-hidden border border-stone-200/80 shadow-sm max-w-[420px] w-full">
+              
+              {/* الصورة الأولى */}
+              <div className="relative aspect-square overflow-hidden rounded-2xl bg-stone-200">
+                <Image
+                  src="https://res.cloudinary.com/rpcf6czj/image/upload/v1785497516/%D8%BA%D9%84%D8%A7%D9%81_%D8%A7%D9%84%D8%A7%D8%A8%D9%88%D8%AA_cksfad.jpg"
+                  alt="Lumière collection 1"
+                  fill
+                  className="object-cover"
+                  sizes="250px"
+                />
+              </div>
+
+              {/* الصورة الثانية */}
+              <div className="relative aspect-square overflow-hidden rounded-2xl bg-stone-200">
+                <Image
+                  src="https://res.cloudinary.com/rpcf6czj/image/upload/v1785499095/WhatsApp_Image_2026-07-31_at_2.02.28_PM_5_grfqqa.jpg"
+                  alt="Lumière collection 2"
+                  fill
+                  className="object-cover"
+                  sizes="250px"
+                />
+              </div>
+
+              {/* الصورة الثالثة */}
+              <div className="relative aspect-square overflow-hidden rounded-2xl bg-stone-200">
+                <Image
+                  src="https://res.cloudinary.com/rpcf6czj/image/upload/v1785499095/WhatsApp_Image_2026-07-31_at_2.55.31_PM_qtjeqj.jpg"
+                  alt="Lumière collection 3"
+                  fill
+                  className="object-cover"
+                  sizes="250px"
+                />
+              </div>
+
+              {/* الصورة الرابعة */}
+              <div className="relative aspect-square overflow-hidden rounded-2xl bg-stone-200">
+                <Image
+                  src="https://res.cloudinary.com/rpcf6czj/image/upload/v1785499096/WhatsApp_Image_2026-07-31_at_2.55.31_PM_1_gb8ocq.jpg"
+                  alt="Lumière collection 4"
+                  fill
+                  className="object-cover"
+                  sizes="250px"
+                />
+              </div>
+
+            </div>
           </div>
+
+          {/* Text Section */}
           <div className="md:w-1/2 text-center md:text-left">
             <h2 className="font-serif text-3xl text-brown sm:text-4xl">
               About Lumière
@@ -186,6 +230,7 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
+
         </div>
       </section>
 
