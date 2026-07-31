@@ -1,4 +1,10 @@
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Store Policy",
+  description: "Learn about Lumière's payment options, shipping times across Egypt, order cancellation, and return policy.",
+};
 
 export default function PolicyPage() {
   const policies = [
@@ -52,8 +58,6 @@ export default function PolicyPage() {
   return (
     <main className="min-h-screen bg-[#FCFCFC] py-12 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-3xl">
-        
-        {/* Header Section */}
         <div className="text-center mb-12">
           <h1 className="font-serif text-3xl sm:text-4xl text-brown tracking-wide mb-3">
             Store Policy
@@ -64,7 +68,6 @@ export default function PolicyPage() {
           </p>
         </div>
 
-        {/* Policies Grid / Stack */}
         <div className="space-y-4">
           {policies.map((item, index) => (
             <section
@@ -86,7 +89,6 @@ export default function PolicyPage() {
           ))}
         </div>
 
-        {/* Back link / Help section */}
         <div className="mt-12 text-center text-xs text-stone-400">
           Have any questions?{" "}
           <Link
@@ -96,7 +98,6 @@ export default function PolicyPage() {
             Return to Checkout
           </Link>
         </div>
-
       </div>
     </main>
   );

@@ -24,8 +24,26 @@ const bodoni = Bodoni_Moda({
 });
 
 export const metadata: Metadata = {
-  title: "Lumière — Timeless Accessories",
+  title: {
+    default: "Lumière — Timeless Accessories",
+    template: "%s | Lumière",
+  },
   description: "Elegant stainless steel accessories designed for every moment.",
+  keywords: [
+    "Lumière",
+    "accessories",
+    "jewelry",
+    "stainless steel",
+    "timeless accessories",
+    "إكسسوارات",
+    "مجوهرات",
+  ],
+  openGraph: {
+    title: "Lumière — Timeless Accessories",
+    description: "Elegant stainless steel accessories designed for every moment.",
+    siteName: "Lumière",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

@@ -1,5 +1,5 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Ruler } from "lucide-react";
 import ProductGallery from "../../components/ProductGallery";
 import AddToCartSection from "../../components/AddToCartSection";
 import RelatedProducts from "../../components/RelatedProducts";
@@ -24,12 +24,41 @@ type ProductDetail = {
 };
 
 async function getProduct(slug: string): Promise<ProductDetail | null> {
-  const res = await fetch(`http://localhost:8080/api/products/${slug}`, {
-    cache: "no-store",
-  });
-  if (res.status === 404) return null;
-  if (!res.ok) throw new Error("Failed to fetch product");
-  return res.json();
+  try {
+    const res = await fetch(`http://localhost:8080/api/products/${slug}`, {
+      cache: "no-store",
+    });
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error("Failed to fetch product");
+    return res.json();
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProduct(slug);
+
+  if (!product) {
+    return {
+      title: "Product Not Found",
+    };
+  }
+
+  return {
+    title: product.name,
+    description: product.description || `Buy ${product.name} at Lumière. Elegant stainless steel accessories.`,
+    openGraph: {
+      title: `${product.name} | Lumière`,
+      description: product.description || `Buy ${product.name} at Lumière.`,
+      images: product.images.length > 0 ? [{ url: product.images[0] }] : [],
+    },
+  };
 }
 
 export default async function ProductPage({
@@ -41,22 +70,19 @@ export default async function ProductPage({
   const product = await getProduct(slug);
   if (!product) notFound();
 
-  // Collect the attributes that exist, so we can show them as cards.
   const attributes = [
     { label: "Material", value: product.material },
     { label: "Size", value: product.size },
     { label: "Chain length", value: product.chainLength },
-  ].filter((a) => a.value); // keep only the ones that have a value
+  ].filter((a) => a.value);
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-5">
-      {/* Breadcrumb — slightly larger for readability */}
       <div className="mb-3 text-sm text-brown-soft">
         Home › {product.categoryName} › {product.name}
       </div>
 
       <div className="grid gap-4 md:gap-10 md:grid-cols-[44%_56%] items-start">
-        {/* Left: image gallery */}
         <ProductGallery
           images={product.images}
           name={product.name}
@@ -64,18 +90,15 @@ export default async function ProductPage({
           discountPercent={product.discountPercent}
         />
 
-        {/* Right: product info */}
         <div>
-          <h1 className="font-serif text-lg  text-brown">{product.name}</h1>
+          <h1 className="font-serif text-lg text-brown">{product.name}</h1>
 
-          {/* Price */}
           <div className="mt-1 flex items-center gap-3">
             {product.onSale ? (
               <>
-                <span className="text-lg  font-medium text-brown">
+                <span className="text-lg font-medium text-brown">
                   EGP {product.salePrice}
                 </span>
-
                 <span className="text-sm text-muted line-through">
                   EGP {product.price}
                 </span>
@@ -84,13 +107,12 @@ export default async function ProductPage({
                 </span>
               </>
             ) : (
-              <span className="text-lg  font-medium text-brown">
+              <span className="text-lg font-medium text-brown">
                 EGP {product.price}
               </span>
             )}
           </div>
 
-          {/* Attributes as small cards — only the ones that exist */}
           {attributes.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-2">
               {attributes.map((attr) => (
@@ -105,14 +127,12 @@ export default async function ProductPage({
             </div>
           )}
 
-          {/* Description */}
           {product.description && (
             <p className="mt-2 text-xs leading-relaxed text-brown-soft">
               {product.description}
             </p>
           )}
 
-          {/* Stock status */}
           <div className="mt-3 mb-2">
             {product.inStock ? (
               product.stockQuantity > 0 && product.stockQuantity <= 3 && (
@@ -125,7 +145,6 @@ export default async function ProductPage({
             )}
           </div>
 
-          {/* Quantity + Add to cart (right after the description) */}
           <AddToCartSection
             id={product.id}
             slug={product.slug}

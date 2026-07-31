@@ -50,9 +50,7 @@ export default function ProductCard({ product }: { product: Product }) {
             src={product.mainImageUrl}
             alt={product.name}
             fill
-            className={`object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04] ${
-              !isInStock ? "grayscale opacity-60" : ""
-            }`}
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
           />
         ) : (
@@ -70,7 +68,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
         {/* Out of stock badge */}
         {!isInStock && (
-          <span className="absolute left-2.5 top-2.5 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-medium text-stone-500 shadow-sm backdrop-blur-sm">
+          <span className="absolute left-2.5 top-2.5 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-medium text-stone-600 shadow-sm backdrop-blur-sm">
             Sold out
           </span>
         )}
@@ -114,7 +112,7 @@ export default function ProductCard({ product }: { product: Product }) {
         {/* Stock status */}
         <div className="mt-1 text-[11px]">
           {!isInStock ? (
-            <span className="text-stone-400">Out of stock</span>
+            <span className="font-medium text-stone-600">Out of stock</span>
           ) : stockQty <= 3 ? (
             <span className="font-medium text-amber-700">Only {stockQty} left</span>
           ) : (

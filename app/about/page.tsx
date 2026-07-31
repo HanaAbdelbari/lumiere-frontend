@@ -1,5 +1,10 @@
-// About page — Lumière brand story & values.
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description: "Discover the story behind Lumière — crafting timeless, premium accessories designed to elevate your everyday style.",
+};
 
 export default function AboutPage() {
   const values = [
@@ -19,7 +24,6 @@ export default function AboutPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-16 sm:py-20">
-      {/* Header Section */}
       <div className="mb-12 text-center">
         <h1 className="font-serif text-3xl sm:text-4xl text-brown tracking-wide">
           About Lumière
@@ -27,14 +31,12 @@ export default function AboutPage() {
         <div className="mx-auto mt-3 h-0.5 w-12 rounded-full bg-gold/60" />
       </div>
 
-      {/* Hero Quote Card */}
       <div className="mb-10 rounded-2xl border border-stone-200/80 bg-[#FAF7F2] p-8 text-center shadow-sm">
         <p className="font-serif text-xl italic text-brown sm:text-2xl leading-relaxed">
           &ldquo;We believe elegance lives in the details.&rdquo;
         </p>
       </div>
 
-      {/* Brand Story Body */}
       <div className="space-y-5 rounded-2xl border border-stone-200/80 bg-white p-6 sm:p-8 text-sm leading-relaxed text-stone-600 shadow-sm">
         <p>
           <strong className="font-serif text-base text-brown">Lumière</strong> is an
@@ -55,7 +57,6 @@ export default function AboutPage() {
         </p>
       </div>
 
-      {/* Values Grid */}
       <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
         {values.map((v) => (
           <div
@@ -70,7 +71,6 @@ export default function AboutPage() {
         ))}
       </div>
 
-      {/* Call to Action */}
       <div className="mt-12 text-center">
         <Link
           href="/"

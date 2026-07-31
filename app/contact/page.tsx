@@ -1,6 +1,11 @@
-// Contact page — reach out via WhatsApp / Instagram / TikTok.
+import { Metadata } from "next";
 import InstagramIcon from "../components/InstagramIcon";
 import { MessageCircle, Music2, ArrowUpRight } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Contact Us",
+  description: "Get in touch with Lumière via WhatsApp, Instagram, or TikTok. We are happy to help with your orders and inquiries.",
+};
 
 export default function ContactPage() {
   const channels = [
@@ -26,7 +31,6 @@ export default function ContactPage() {
 
   return (
     <main className="mx-auto max-w-md px-4 py-16 sm:py-20">
-      {/* Header */}
       <div className="mb-10 text-center">
         <h1 className="font-serif text-3xl sm:text-4xl text-brown tracking-wide">Contact Us</h1>
         <div className="mx-auto mt-3 h-0.5 w-12 rounded-full bg-gold/60" />
@@ -35,7 +39,6 @@ export default function ContactPage() {
         </p>
       </div>
 
-      {/* Channels List */}
       <div className="space-y-4">
         {channels.map((c) => {
           const Icon = c.icon;
@@ -57,7 +60,6 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              {/* Arrow Indicator */}
               <ArrowUpRight
                 size={18}
                 className="text-stone-400 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brown"
