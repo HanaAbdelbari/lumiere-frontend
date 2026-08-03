@@ -30,7 +30,8 @@ type Category = {
 // Error Handling Safe Fetching
 async function getProducts(): Promise<ProductSummary[]> {
   try {
-    const res = await fetch("http://localhost:8080/api/products", {
+    console.log("API URL =", process.env.NEXT_PUBLIC_API_URL);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
       cache: "no-store",
     });
     if (!res.ok) return [];
@@ -43,7 +44,7 @@ async function getProducts(): Promise<ProductSummary[]> {
 
 async function getCategories(): Promise<Category[]> {
   try {
-    const res = await fetch("http://localhost:8080/api/categories", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categories`, {
       cache: "no-store",
     });
     if (!res.ok) return [];
@@ -56,7 +57,7 @@ async function getCategories(): Promise<Category[]> {
 
 async function getOnSale(): Promise<ProductSummary[]> {
   try {
-    const res = await fetch("http://localhost:8080/api/products/on-sale", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/on-sale`, {
       cache: "no-store",
     });
     if (!res.ok) return [];

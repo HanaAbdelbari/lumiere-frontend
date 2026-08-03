@@ -25,7 +25,7 @@ type ProductDetail = {
 
 async function getProduct(slug: string): Promise<ProductDetail | null> {
   try {
-    const res = await fetch(`http://localhost:8080/api/products/${slug}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${slug}`, {
       cache: "no-store",
     });
     if (res.status === 404) return null;

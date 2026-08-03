@@ -18,7 +18,7 @@ async function getCategoryProducts(
   categorySlug: string
 ): Promise<ProductSummary[]> {
   const res = await fetch(
-    `http://localhost:8080/api/products/category/${categorySlug}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/products/category/${categorySlug}`,
     { cache: "no-store" }
   );
   if (!res.ok) return [];

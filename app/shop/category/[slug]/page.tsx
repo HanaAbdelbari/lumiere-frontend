@@ -14,7 +14,7 @@ type ProductSummary = {
 
 async function getCategoryProducts(slug: string): Promise<ProductSummary[]> {
   const res = await fetch(
-    `http://localhost:8080/api/products/category/${slug}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/products/category/${slug}`,
     { cache: "no-store" }
   );
   if (!res.ok) throw new Error("Failed to fetch category products");

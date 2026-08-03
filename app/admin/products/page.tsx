@@ -42,7 +42,7 @@ export default function AdminProductsPage() {
     let active = true;
     (async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/admin/products", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/products`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.status === 401 || res.status === 403) {
@@ -64,7 +64,7 @@ export default function AdminProductsPage() {
 
   async function handleDelete(id: number) {
     if (!token) return;
-    await fetch(`http://localhost:8080/api/admin/products/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/products/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -77,7 +77,7 @@ export default function AdminProductsPage() {
 
   async function handleRestore(id: number) {
     if (!token) return;
-    await fetch(`http://localhost:8080/api/admin/products/${id}/restore`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/products/${id}/restore`, {
       method: "PATCH",
       headers: { Authorization: `Bearer ${token}` },
     });

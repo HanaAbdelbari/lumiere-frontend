@@ -50,7 +50,7 @@ export default function ProductForm({ productId }: { productId?: number }) {
 
   // Load categories for the dropdown.
   useEffect(() => {
-    fetch("http://localhost:8080/api/categories")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categories`)
       .then((r) => r.json())
       .then(setCategories)
       .catch(() => {});
@@ -59,7 +59,7 @@ export default function ProductForm({ productId }: { productId?: number }) {
   // If editing, load the product's current data from the admin detail endpoint.
   useEffect(() => {
     if (!productId || !token) return;
-    fetch(`http://localhost:8080/api/admin/products/${productId}`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/products/${productId}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => r.json())
@@ -104,7 +104,7 @@ export default function ProductForm({ productId }: { productId?: number }) {
     try {
       const data = new FormData();
       data.append("file", file);
-      const res = await fetch("http://localhost:8080/api/admin/upload", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/upload`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: data,
@@ -151,8 +151,8 @@ export default function ProductForm({ productId }: { productId?: number }) {
     };
 
     const url = productId
-      ? `http://localhost:8080/api/admin/products/${productId}`
-      : "http://localhost:8080/api/admin/products";
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/admin/products/${productId}`
+      : `${process.env.NEXT_PUBLIC_API_URL}/api/admin/products`;
     const method = productId ? "PUT" : "POST";
 
     try {

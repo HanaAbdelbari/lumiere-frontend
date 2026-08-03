@@ -47,7 +47,7 @@ export default function AdminOrdersPage() {
 
   // Fetch orders. Reused after a status change to refresh the list.
   async function fetchOrders(authToken: string) {
-    const res = await fetch("http://localhost:8080/api/admin/orders", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/orders`, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
     if (res.status === 401 || res.status === 403) {
@@ -64,7 +64,7 @@ export default function AdminOrdersPage() {
     let active = true;
     (async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/admin/orders", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/orders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.status === 401 || res.status === 403) {
@@ -86,7 +86,7 @@ export default function AdminOrdersPage() {
 
   async function changeStatus(id: number, status: string) {
     if (!token) return;
-    await fetch(`http://localhost:8080/api/admin/orders/${id}/status`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/orders/${id}/status`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
