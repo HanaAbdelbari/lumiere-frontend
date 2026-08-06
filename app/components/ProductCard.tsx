@@ -13,20 +13,24 @@ export type Product = {
   onSale?: boolean;
   discountPercent?: number | null;
   inStock?: boolean;
-  stockQuantity?: number; // جعلها اختيارية لتجنب مشاكل الـ Types
+  stockQuantity?: number;
   mainImageUrl?: string | null;
 };
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
 
-  // القيم الافتراضية للتأكد من عدم حدوث أخطاء
-  const isInStock = product.inStock ?? true;
-  const stockQty = product.stockQuantity ?? 10;
+  // 1. قراءة الـ stockQuantity الحقيقي (والافتراضي 0 لو مش مبعوث عشان نكتشف المشكلة فوراً)
+  const stockQty = product.stockQuantity ?? 0;
+
+  // 2. الاعتماد على stockQuantity أو inStock المباشرة لحساب هل المنتج متوفر
+  const isInStock = product.inStock !== undefined 
+    ? product.inStock 
+    : (product.stockQuantity !== undefined ? stockQty > 0 : true);
 
   function quickAdd(e: React.MouseEvent) {
     e.preventDefault(); // يمنع الانتقال لصفحة المنتج عند الضغط على الزر
-    if (!isInStock) return;
+    if (!isInStock || stockQty <= 0) return;
 
     addItem(
       {
@@ -60,7 +64,7 @@ export default function ProductCard({ product }: { product: Product }) {
         )}
 
         {/* Discount badge */}
-        {product.onSale && (
+        {product.onSale && product.discountPercent && (
           <span className="absolute right-2.5 top-2.5 rounded-full bg-brown px-2 py-0.5 font-sans text-[10px] font-semibold text-white shadow-sm">
             -{product.discountPercent}%
           </span>
@@ -93,7 +97,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
         {/* Price */}
         <div className="mt-1 flex items-center gap-2 font-sans">
-          {product.onSale ? (
+          {product.onSale && product.salePrice ? (
             <>
               <span className="text-sm font-semibold text-brown">
                 EGP {product.salePrice}
@@ -113,7 +117,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="mt-1 text-[11px]">
           {!isInStock ? (
             <span className="font-medium text-stone-600">Out of stock</span>
-          ) : stockQty <= 3 ? (
+          ) : stockQty <= 3 && product.stockQuantity !== undefined ? (
             <span className="font-medium text-amber-700">Only {stockQty} left</span>
           ) : (
             <span className="text-emerald-600">In stock</span>

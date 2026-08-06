@@ -9,8 +9,12 @@ type ProductSummary = {
   onSale: boolean;
   discountPercent: number | null;
   inStock: boolean;
+  stockQuantity: number;
   mainImageUrl: string | null;
 };
+
+// إجبار Next.js على جلب البيانات مباشرة من السيرفر بدون كاش
+export const dynamic = "force-dynamic";
 
 async function getProducts(): Promise<ProductSummary[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
