@@ -16,6 +16,7 @@ export type CartItem = {
   imageUrl: string | null;
   attributes: string;
   quantity: number;
+  stockQuantity?: number; // تخزين المخزون المتاح مع العنصر
 };
 
 type CartContextType = {
@@ -33,7 +34,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 const STORAGE_KEY = "lumiere-cart";
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  // قراءة الـ localStorage مباشرة عند أول بداية للـ State بدون الحاجة لـ useEffect متزامن
+  // قراءة الـ localStorage مباشرة عند أول بداية للـ State
   const [items, setItems] = useState<CartItem[]>(() => {
     if (typeof window === "undefined") return [];
     try {
@@ -57,12 +58,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
   function addItem(item: Omit<CartItem, "quantity">, quantity: number) {
     setItems((current) => {
       const existing = current.find((i) => i.id === item.id);
+      const maxStock = item.stockQuantity ?? Infinity;
+
       if (existing) {
+        const newQuantity = existing.quantity + quantity;
+        if (newQuantity > maxStock) {
+          return current.map((i) =>
+            i.id === item.id ? { ...i, quantity: maxStock, stockQuantity: maxStock } : i
+          );
+        }
         return current.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + quantity } : i
+          i.id === item.id ? { ...i, quantity: newQuantity, stockQuantity: maxStock } : i
         );
       }
-      return [...current, { ...item, quantity }];
+
+      const initialQuantity = Math.min(quantity, maxStock);
+      return [...current, { ...item, quantity: initialQuantity, stockQuantity: maxStock }];
     });
   }
 
@@ -73,7 +84,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
   function updateQuantity(id: number, quantity: number) {
     if (quantity < 1) return;
     setItems((current) =>
-      current.map((i) => (i.id === id ? { ...i, quantity } : i))
+      current.map((i) => {
+        if (i.id === id) {
+          const maxStock = i.stockQuantity ?? Infinity;
+          return { ...i, quantity: Math.min(quantity, maxStock) };
+        }
+        return i;
+      })
     );
   }
 

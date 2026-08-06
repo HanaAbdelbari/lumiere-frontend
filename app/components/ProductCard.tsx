@@ -20,7 +20,7 @@ export type Product = {
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
 
-  // 1. قراءة الـ stockQuantity الحقيقي (والافتراضي 0 لو مش مبعوث عشان نكتشف المشكلة فوراً)
+  // 1. قراءة الـ stockQuantity الحقيقي
   const stockQty = product.stockQuantity ?? 0;
 
   // 2. الاعتماد على stockQuantity أو inStock المباشرة لحساب هل المنتج متوفر
@@ -40,6 +40,7 @@ export default function ProductCard({ product }: { product: Product }) {
         price: product.onSale && product.salePrice ? product.salePrice : product.price,
         imageUrl: product.mainImageUrl ?? "",
         attributes: "",
+        stockQuantity: stockQty, // مررنا المخزون للـ CartContext
       },
       1
     );
