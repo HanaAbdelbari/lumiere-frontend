@@ -27,10 +27,8 @@ type Category = {
   coverImage: string | null;
 };
 
-// Error Handling Safe Fetching
 async function getProducts(): Promise<ProductSummary[]> {
   try {
-    console.log("API URL =", process.env.NEXT_PUBLIC_API_URL);
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
       cache: "no-store",
     });
@@ -97,7 +95,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* New Arrivals - تم إضافة .slice(0, 4) لعرض 4 منتجات فقط */}
+      {/* New Arrivals */}
       {products.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6 sm:pb-20">
           <div className="mb-10 text-center">
@@ -118,7 +116,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Special Offers Section */}
+      {/* Special Offers Section - عرض 4 منتجات فقط */}
       {offers.length > 0 && (
         <section className="bg-[#FAF7F2] py-16">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -134,19 +132,21 @@ export default async function HomePage() {
                 offers.length < 4 ? "justify-center max-w-3xl mx-auto" : ""
               }`}
             >
-              {offers.map((product) => (
+              {offers.slice(0, 4).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
 
-            <div className="mt-10 text-center">
-              <Link
-                href="/shop/sale"
-                className="inline-block rounded-full border border-brown/40 px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-brown transition-all hover:border-brown hover:bg-brown hover:text-white"
-              >
-                View All Offers
-              </Link>
-            </div>
+            {offers.length > 4 && (
+              <div className="mt-10 text-center">
+                <Link
+                  href="/shop/sale"
+                  className="inline-block rounded-full border border-brown/40 px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-brown transition-all hover:border-brown hover:bg-brown hover:text-white"
+                >
+                  View All Offers
+                </Link>
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -155,11 +155,9 @@ export default async function HomePage() {
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
         <div className="flex flex-col items-center gap-8 md:flex-row md:gap-12">
           
-          {/* 4 Images Grid Collage */}
           <div className="w-full md:w-1/2 flex justify-center">
             <div className="grid grid-cols-2 gap-2 p-2 bg-stone-100 rounded-3xl overflow-hidden border border-stone-200/80 shadow-sm max-w-[420px] w-full">
               
-              {/* الصورة الأولى */}
               <div className="relative aspect-square overflow-hidden rounded-2xl bg-stone-200">
                 <Image
                   src="https://res.cloudinary.com/rpcf6czj/image/upload/v1785497516/%D8%BA%D9%84%D8%A7%D9%81_%D8%A7%D9%84%D8%A7%D8%A8%D9%88%D8%AA_cksfad.jpg"
@@ -170,7 +168,6 @@ export default async function HomePage() {
                 />
               </div>
 
-              {/* الصورة الثانية */}
               <div className="relative aspect-square overflow-hidden rounded-2xl bg-stone-200">
                 <Image
                   src="https://res.cloudinary.com/rpcf6czj/image/upload/v1785499095/WhatsApp_Image_2026-07-31_at_2.02.28_PM_5_grfqqa.jpg"
@@ -181,7 +178,6 @@ export default async function HomePage() {
                 />
               </div>
 
-              {/* الصورة الثالثة */}
               <div className="relative aspect-square overflow-hidden rounded-2xl bg-stone-200">
                 <Image
                   src="https://res.cloudinary.com/rpcf6czj/image/upload/v1785499095/WhatsApp_Image_2026-07-31_at_2.55.31_PM_qtjeqj.jpg"
@@ -192,7 +188,6 @@ export default async function HomePage() {
                 />
               </div>
 
-              {/* الصورة الرابعة */}
               <div className="relative aspect-square overflow-hidden rounded-2xl bg-stone-200">
                 <Image
                   src="https://res.cloudinary.com/rpcf6czj/image/upload/v1785499096/WhatsApp_Image_2026-07-31_at_2.55.31_PM_1_gb8ocq.jpg"
@@ -206,7 +201,6 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Text Section */}
           <div className="md:w-1/2 text-center md:text-left">
             <h2 className="font-serif text-3xl text-brown sm:text-4xl">
               About Lumière
