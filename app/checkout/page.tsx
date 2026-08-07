@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "../context/CartContext";
 
-// Egypt governorates for the dropdown
 const GOVERNORATES = [
   "Cairo", "Giza", "Alexandria", "Dakahlia", "Red Sea", "Beheira", "Fayoum",
   "Gharbia", "Ismailia", "Menofia", "Minya", "Qalyubia", "New Valley", "Suez",
@@ -15,7 +14,6 @@ const GOVERNORATES = [
 
 const FREE_SHIPPING_THRESHOLD = 800;
 
-// Shipping Categories
 const CAIRO_GIZA = new Set(["cairo", "giza"]);
 const CANAL_DAMIETTA = new Set(["ismailia", "suez", "port said", "damietta"]);
 const UPPER_EGYPT = new Set([
@@ -42,7 +40,6 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  // Estimated shipping for display (backend is the source of truth)
   function estimatedShipping(): number | null {
     if (totalPrice >= FREE_SHIPPING_THRESHOLD) return 0;
     if (!form.governorate) return null;
@@ -53,12 +50,14 @@ export default function CheckoutPage() {
     if (CANAL_DAMIETTA.has(g)) return 95;
     if (UPPER_EGYPT.has(g)) return 110;
 
-    return 90; // Rest of Egypt
+    return 90;
   }
 
   const shipping = estimatedShipping();
   const total = shipping === null ? totalPrice : totalPrice + shipping;
-  const deposit = Math.round(total * 0.5);
+
+  // ⚡ التعديل هنا: تقريب الديبوزيت لأقرب 5 لأسفل بدون كسور ⚡
+  const deposit = Math.floor((total * 0.5) / 5) * 5;
 
   function update(field: string, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -114,8 +113,6 @@ export default function CheckoutPage() {
   }
 
   const labelClass = "block text-[11px] font-semibold uppercase tracking-wider text-brown-soft mb-1.5";
-  
-  // ⚡ التعديل الرئيسي هنا: تبيين حدود المربعات بشكل أوضح ⚡
   const inputClass =
     "w-full rounded-lg border border-stone-300 bg-white px-3.5 py-3 text-sm text-brown placeholder:text-stone-400 transition-all hover:border-stone-400 focus:border-brown focus:outline-none focus:ring-1 focus:ring-brown shadow-sm";
 
@@ -124,8 +121,6 @@ export default function CheckoutPage() {
       <h1 className="mb-8 font-serif text-3xl text-brown">Checkout</h1>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
-        
-        {/* Left Column: Customer Form */}
         <div className="lg:col-span-7">
           <section className="rounded-xl border border-stone-200 bg-white p-6 md:p-8 shadow-sm">
             <h2 className="mb-6 font-serif text-xl text-brown">Customer Information</h2>
@@ -189,7 +184,6 @@ export default function CheckoutPage() {
           </section>
         </div>
 
-        {/* Right Column: Order Summary & Payment info */}
         <div className="space-y-5 lg:col-span-5">
           <section className="rounded-xl border border-stone-200 bg-white p-6 shadow-sm">
             <h2 className="mb-5 font-serif text-xl text-brown">Order Summary</h2>
@@ -214,18 +208,17 @@ export default function CheckoutPage() {
               <div className="flex justify-between pt-1 font-serif text-lg text-brown">
                 <span>Total</span>
                 <div className="font-bold">
-  <span>EGP {total}</span>
-  {shipping === null && (
-    <span className="ml-1 text-xs font-normal text-stone-500">
-      (+ shipping)
-    </span>
-  )}
-</div>
+                  <span>EGP {total}</span>
+                  {shipping === null && (
+                    <span className="ml-1 text-xs font-normal text-stone-500">
+                      (+ shipping)
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           </section>
 
-          {/* Deposit Info Card */}
           <section className="rounded-xl border border-amber-900/10 bg-[#FAF7F2] p-6">
             <h3 className="mb-3 text-[11px] font-bold uppercase tracking-wider text-brown">Payment Details</h3>
             <div className="space-y-1.5">
@@ -243,7 +236,6 @@ export default function CheckoutPage() {
             </p>
           </section>
 
-          {/* Store Policy Agreement */}
           <div className="pt-1 space-y-4">
             <label className="flex items-center gap-2.5 text-xs text-brown-soft cursor-pointer select-none">
               <input
